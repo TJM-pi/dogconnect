@@ -1,17 +1,48 @@
 <template>
   <div class="navbar">
     <nav class="blue darken-1">
-      <div class="container">
-        <router-link :to="{ name: 'Map' }" class="brand-logo left">DogConnect!</router-link>
-        <ul class="right">
+      <div class="container nav-wrapper">
+        <router-link :to="{ name: 'Map' }" class="brand-logo left" style="font-size:2vw;">
+          Dogconnect!
+        </router-link>
+         
+         <ul class="nav-wrapper center-nav hide-on-small-only">
+          <li v-if="!user"><router-link :to="{ name: 'Signup' }"> Mapa</router-link></li>
+          <li v-if="!user"><router-link :to="{ name: 'Login' }">Social</router-link></li>
+          <li v-if="!user"><router-link :to="{ name: 'Login' }">Stats</router-link></li>
+        </ul>
+
+        <ul class="nav-wrapper center-nav hide-on-med-and-up">
+          <li v-if="!user"><router-link :to="{ name: 'Signup' }"><i class="material-icons">people</i></router-link></li>
+          <li v-if="!user"><router-link :to="{ name: 'Signup' }"><i class="material-icons">public</i></router-link></li>
+          <li v-if="!user"><router-link :to="{ name: 'Signup' }"><i class="material-icons">show_chart</i></router-link></li>
+        </ul>
+
+        <ul class="right hide-on-small-only">
           <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
           <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
           <li v-if="user"><a href="">{{ user.email }}</a></li>
           <li v-if="user"><a @click="logout">Logout</a></li>
-        </ul>  
-      </div>     
+        </ul>
+
+        <ul class="right hide-on-med-and-up">
+          <li v-on:click="isHidden = !isHidden"><a href="#"><i class="material-icons">menu</i></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <nav v-if="!isHidden" class="navbar blue darken-2">
+      <div class="container nav-wrapper">
+        <ul v-if="!isHidden" class="right">
+          <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
+          <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
+          <li v-if="user"><a href="">{{ user.email }}</a></li>
+          <li v-if="user"><a @click="logout">Logout</a></li>
+        </ul>
+      </div>
     </nav>
   </div>
+
 </template>
 
 <script>
@@ -21,7 +52,8 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      user: null
+      user: null,
+      isHidden: true
     }
   },
   methods: {
@@ -29,7 +61,6 @@ export default {
       firebase.auth().signOut().then(() => {
         this.$router.push({ name: 'Login'})
       })
-    }
   },
   created () {
     firebase.auth().onAuthStateChanged((user) => {
@@ -41,8 +72,24 @@ export default {
     })
   }
 }
+}
 </script>
 
-<style>
 
+<style lang="scss">  
+  nav .brand-logo i.material-icons{
+    margin-right:0px;
+  }
+
+  .center-nav{
+    position: absolute;
+    color: #fff;
+    display: inline-block;
+    font-size: 2.1rem;
+    padding: 0;
+
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
 </style>
