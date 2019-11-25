@@ -6,19 +6,19 @@
           Dogconnect!
         </router-link>
          
-         <ul class="nav-wrapper center-nav hide-on-small-only">
-          <li v-if="!user"><router-link :to="{ name: 'Signup' }"> Mapa</router-link></li>
-          <li v-if="!user"><router-link :to="{ name: 'Login' }">Social</router-link></li>
-          <li v-if="!user"><router-link :to="{ name: 'Login' }">Stats</router-link></li>
+         <ul class="nav-wrapper center-nav hide-on-small-only ultext">
+          <li><router-link :to="{ name: 'Map' }"> Mapa</router-link></li>
+          <li><router-link :to="{ name: 'Social' }">Social</router-link></li>
+          <li><router-link :to="{ name: 'Stats' }">Stats</router-link></li>
         </ul>
 
         <ul class="nav-wrapper center-nav hide-on-med-and-up">
-          <li v-if="!user"><router-link :to="{ name: 'Signup' }"><i class="material-icons">people</i></router-link></li>
-          <li v-if="!user"><router-link :to="{ name: 'Signup' }"><i class="material-icons">public</i></router-link></li>
-          <li v-if="!user"><router-link :to="{ name: 'Signup' }"><i class="material-icons">show_chart</i></router-link></li>
+          <li><router-link :to="{ name: 'Social' }"><i class="material-icons">people</i></router-link></li>
+          <li><router-link :to="{ name: 'Map' }"><i class="material-icons">public</i></router-link></li>
+          <li><router-link :to="{ name: 'Stats' }"><i class="material-icons">show_chart</i></router-link></li>
         </ul>
 
-        <ul class="right hide-on-small-only">
+        <ul class="right hide-on-small-only ultext">
           <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
           <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
           <li v-if="user"><a href="">{{ user.email }}</a></li>
@@ -31,7 +31,7 @@
       </div>
     </nav>
 
-    <nav v-if="!isHidden" class="navbar blue darken-2">
+    <nav v-if="!isHidden" class="navbar blue darken-2 hide-on-med-and-up">
       <div class="container nav-wrapper">
         <ul v-if="!isHidden" class="right">
           <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
@@ -61,17 +61,17 @@ export default {
       firebase.auth().signOut().then(() => {
         this.$router.push({ name: 'Login'})
       })
+    }
   },
   created () {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.user = user;
       } else {
-        this.user = null
+        this.user = null;
       }
     })
-  }
-}
+    }
 }
 </script>
 
@@ -91,5 +91,9 @@ export default {
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+  }
+
+  .ultext li a{
+    font-size:17px;
   }
 </style>
