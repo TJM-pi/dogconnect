@@ -35,7 +35,8 @@ export default {
             password: null,
             alias: null,
             feedback: null,
-            slug: null
+            slug: null,
+            pings: null
         }
     },
     methods: {
@@ -46,7 +47,6 @@ export default {
                     remove: /[$*_+~.()'"!\-:@]/g,
                     lower: true
                 })
-                console.log(this.slug)
                 let ref = db.collection('users').doc(this.slug)
                 ref.get().then(doc => {
                     if (doc.exists) {
@@ -57,7 +57,8 @@ export default {
                             ref.set({
                                 alias: this.alias,
                                 geolocation: null,
-                                user_id: cred.user.uid
+                                user_id: cred.user.uid,
+                                pings: this.pings
                             })
                         }).then(() => {
                             this.$router.push({

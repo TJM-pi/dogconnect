@@ -4,6 +4,8 @@ import Map from '@/components/home/Map'
 import Signup from '@/components/auth/Signup'
 import Login from '@/components/auth/Login'
 import Profile from '@/components/profile/Profile'
+import Ping from '@/components/home/Ping'
+import Story from '@/components/home/Story'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
@@ -15,7 +17,22 @@ const routes = [
     component: Map,
     meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: '/ping',
+        name: 'Ping',
+        component: Ping,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'story/:id',
+        name: 'Story',
+        component: Story
+      }
+    ]
   },
   {
     path: '/signup',
@@ -34,7 +51,7 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  }
+  },
 ]
 
 const router = new VueRouter({

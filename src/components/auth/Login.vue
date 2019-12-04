@@ -19,6 +19,7 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import firebase from 'firebase'
 
 export default {
@@ -36,7 +37,6 @@ export default {
                 this.feedback = null
                 firebase.auth().signInWithEmailAndPassword(this.email, this.password)
                 .then(cred => {
-                    console.log(cred.user)
                     this.$router.push({ 
                         name: 'Map'
                     })
