@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Map from '@/components/home/Map'
+import Social from '@/components/social/Social'
 import Signup from '@/components/auth/Signup'
 import Login from '@/components/auth/Login'
 import Profile from '@/components/profile/Profile'
@@ -33,6 +34,11 @@ const routes = [
         component: Story
       }
     ]
+  },
+  {
+    path: '/social',
+    name: 'Social',
+    component: Social
   },
   {
     path: '/signup',
