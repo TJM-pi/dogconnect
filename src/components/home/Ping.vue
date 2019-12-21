@@ -37,13 +37,13 @@ export default {
     },
     methods: {
       sendImage (event) {
-          this.$emit('sent', this.image)
+          this.$emit('sent', this.image) //$emit activates parent event handler 'sent', sends this.image as parameter
       },
       storeImage (value) {
           this.image = value;
       },
       close() {
-        this.$emit('close');
+        this.$emit('close'); 
       },
       ping(event) {
           if (this.story) {
@@ -60,7 +60,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .modal-fade-enter,
 .modal-fade-leave-active {
     opacity: 0;

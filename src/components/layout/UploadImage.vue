@@ -45,13 +45,13 @@ export default {
       }
     }
   },
-  destroyed() {
+  destroyed() { //UploadImage is destroyed when parent's "Create" button is clicked
     this.sendImage(event)
   }
 };
 </script>
 
-<style>
+<style lang="scss">
 .modal-fade-enter,
 .modal-fade-leave-active {
     opacity: 0;
@@ -59,11 +59,15 @@ export default {
 
 .modal-fade-enter-active,
 .modal-fade-leave-active {
-    transition: opacity 1s ease
+    transition: opacity 1s ease;
 }
 
-image.img.preview {
-  width: 200px;
+.image .image-preview{
+  text-align: center;
+}
+
+.image img.preview {
+  max-width: 200px;
   background-color: white;
   border: 1px solid #ddd;
   padding: 5px;
