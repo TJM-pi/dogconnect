@@ -71,7 +71,7 @@ export default {
       if (ping) { //showPings
         marker.addListener("click", () => {
           db.collection("users")
-            .where("user_id", "==", ping.data().user_id)
+            .where("user_id", "==", ping.user_id)//ping.data().user_id)
             .get()
             .then(snapshot => {
               console.log("showPings")
@@ -104,6 +104,10 @@ export default {
     },
     setMapOnFriendMarkers(){
       let friendsArr = this.userDoc.friend_id
+      if(friendsArr === undefined){
+        console.log("You have no friends")
+        return
+      }
       for(let i=0;i<this.all_markers.length;i++)
       { 
         if(friendsArr.includes(this.all_markers[i].user_id))
@@ -114,6 +118,10 @@ export default {
     },
     setMapOnBlockedMarkers(){
       let blockedArr = this.userDoc.blocked_id
+      if(blockedArr === undefined){
+        console.log("You haven't blocked anyone")
+        return
+      }
       for(let i=0;i<this.all_markers.length;i++)
       { 
         if(blockedArr.includes(this.all_markers[i].user_id))
@@ -129,27 +137,19 @@ export default {
       else if(this.filterValue == "friends") this.setMapOnFriendMarkers()
       else if(this.filterValue == "blocked") this.setMapOnBlockedMarkers()
     },
-    updatePings(){
-      db.collection("pings")
-        .get()
-        .then(pings => {
-          pings.docs.forEach(doc => {
-            if (doc.data().latitude && doc.data().longitude) {
-              let marker = new window.google.maps.Marker({
-                position: {
-                  lat: doc.data().latitude,
-                  lng: doc.data().longitude
-                },
-                map: this.map, //pri mountu odma stavlja sve pingove na mapu ovdje
-                user_id: doc.data().user_id
-              });
-              this.addListenerToMarker(marker, doc)
-              this.all_markers.push(marker)
-            }
-          });
-        });
+    addPingToMap(ping){
+      let marker = new window.google.maps.Marker({
+        position: {
+          lat: ping.latitude,
+          lng: ping.longitude
+        },
+        map: this.map, //odma ga stavi na mapu (pr. pri mountu)
+        user_id: ping.user_id
+      })
+      this.addListenerToMarker(marker,ping)
+      this.all_markers.push(marker)
     },
-    getLocation() { //updates user's lat, lng coordinates to current one's
+    getLocation() { //updates user's lat, lng coordinates to current one's (IMPORTANT WHILE USER IS MOVING AROUND)
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           pos => {
@@ -239,29 +239,45 @@ export default {
         streetViewControl: false
       });
     },
-    updateUserDoc(){
+    userDocListener(){ //refreshes userDoc (coz new friends/blocked)
       db
       .collection("users")
       .where("user_id","==",this.user.uid)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .onSnapshot(snapshot => {
+        snapshot.forEach(doc => {
           this.userDoc = doc.data()
           console.log("userDoc updated.", this.userDoc)
         })
-      }
-      )
+      })
     },
+    pingListener(){ //refreshes pings
+      db
+      .collection("pings")
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === "added") { //can add pings
+            this.addPingToMap(change.doc.data())
+            console.log("New ping: ", change.doc.data());
+          }
+          if (change.type === "modified") { //triggered when same user creates ping twice
+            console.log("Modified ping: ", change.doc.data());
+          }
+          if (change.type === "removed") { //currently cannot remove pings from db
+            console.log("Removed ping: ", change.doc.data());
+          }
+        });
+    });
+    }
   },
   mounted() {
-    this.updateUserDoc()
-    this.updatePings()
+    this.userDocListener()
     if (navigator.geolocation) { //location enabled
       navigator.geolocation.getCurrentPosition(
         pos => {
           this.lat = pos.coords.latitude;
           this.lng = pos.coords.longitude;
           this.renderMap();
+          this.pingListener()
         },
         err => {
           console.log(err);
@@ -274,6 +290,7 @@ export default {
       );
     } else {
       this.renderMap();
+      this.pingListener()
     }
   }
 };
