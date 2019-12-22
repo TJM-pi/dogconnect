@@ -43,7 +43,7 @@ export default {
         }).then(() => {
             db.collection('pings').where('user_id', '==', this.profile.user_id)
             .get().then(snapshot => {
-                snapshot.forEach(doc => {
+                snapshot.forEach(doc => { //forEach? uvijek će biti samo jedan, Todo: fix
                     this.story = doc.data().story
                     this.image = doc.data().image
                 })
@@ -80,8 +80,10 @@ export default {
 .story .btn {
     margin-right: 10px;
 }
-
-.story.img.preview {
+.story .image-preview{
+    text-align:center;
+}
+.story img.preview {
   width: 200px;
   background-color: white;
   border: 1px solid #ddd;

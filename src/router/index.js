@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Map from '@/components/home/Map'
+import Social from '@/components/social/Social'
+import Stats from '@/components/stats/Stats'
 import Signup from '@/components/auth/Signup'
 import Login from '@/components/auth/Login'
 import Profile from '@/components/profile/Profile'
@@ -35,6 +37,22 @@ const routes = [
     ]
   },
   {
+    path: '/social',
+    name: 'Social',
+    component: Social,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/stats',
+    name: 'Stats',
+    component: Stats,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/signup',
     name: 'Signup',
     component: Signup
@@ -60,6 +78,7 @@ const router = new VueRouter({
   routes
 })
 
+//login check
 router.beforeEach((to, from, next) => {
   if (to.matched.some(rec => rec.meta.requiresAuth)) {
     let user = firebase.auth().currentUser

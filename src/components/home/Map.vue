@@ -1,9 +1,28 @@
 [<template>
   <div class="map">
-    <div class="google-map" id="map" @mousemove.prevent="showPings"></div>
-    <a v-show="!isModalVisible" class="btn-floating right yellow" @click="showModal">
-      <i class="material-icons">add</i>
-    </a>
+    <div class="google-map" id="map"></div>
+
+    <div class="btn-group">
+      <a v-show="!isModalVisible" class="btn-floating yellow" @click="showModal">
+        <i class="material-icons">add</i>
+      </a>
+      <a v-show="!isModalVisible" class="btn-floating yellow" @click="filterDropdown = !filterDropdown">
+        <i class="material-icons">sort</i>
+      </a>
+      <ul v-show="filterDropdown">
+        <li v-show="filterValue!='all'" class="btn blue" @click="change('all')">All</li>
+        <li v-show="filterValue=='all'" class="btn grey" @click="change('all')" disabled>All</li>
+        <li v-show="filterValue!='friends'" class="btn blue" @click="change('friends')">Friends only</li>
+        <li v-show="filterValue=='friends'" class="btn grey" @click="change('friends')" disabled>Friends only</li>
+        <li v-show="filterValue!='blocked'" class="btn blue" @click="change('blocked')">Blocked only</li>
+        <li v-show="filterValue=='blocked'" class="btn grey" @click="change('blocked')" disabled>Blocked only</li>
+      </ul>
+      
+      <!--<a v-show="!isModalVisible" class="btn-floating blue" @click="showPings" title="Refresh map, Calls showPings(), mouseover has been cut"> 
+        <i class="material-icons">refresh</i>
+      </a>-->
+    </div>
+
     <Ping v-if="isModalVisible" @close="closeModal" @ping="createPing" @sent="storeImage"/>
     <Story v-if="isStoryVisible" :storyID="storyID" @close="closeModal" />
   </div>
@@ -30,32 +49,45 @@ export default {
       isModalVisible: false,
       isStoryVisible: false,
       map: null,
+      all_markers: [], //u njemu se nalaze svi Marker(), pri dodavanju novog pinga ga je potrebno updatati || showPings iz njega filtrirano prikazuje na mapu
       user: firebase.auth().currentUser,
+      userDoc: null,
       storyID: null,
-      image: ""
+      image: "",
+      filterDropdown: false,
+      filterValue: "all"
     }
   },
   methods: {
+    change(value){
+      if(this.filterValue === value) this.filterValue = "all"
+      else this.filterValue = value
+      this.showPings()
+    },
     storeImage (value) {
       this.image = value
     },
-    addListenerToMarker(marker, ping) {
-      if (ping) {
+    addListenerToMarker(marker, ping) { //implementacija click eventa pinga
+      if (ping) { //showPings
         marker.addListener("click", () => {
-        db.collection("users")
-          .where("user_id", "==", ping.data().user_id)
+          db.collection("users")
+            .where("user_id", "==", ping.user_id)//ping.data().user_id)
+            .get()
+            .then(snapshot => {
+              console.log("showPings")
+              snapshot.forEach(doc => {
+                  this.storyID = doc.id;
+                  this.isStoryVisible = true;
+              });
+            });
+        });
+      } else { //createPing
+        marker.addListener('click', () => {
+          db.collection('users')
+          .where('user_id', '==', this.user.uid)
           .get()
           .then(snapshot => {
-            snapshot.forEach(doc => {
-                this.storyID = doc.id;
-                this.isStoryVisible = true;
-            });
-          });
-      });
-      } else {
-        marker.addListener('click', () => {
-          db.collection('users').where('user_id', '==', this.user.uid)
-          .get().then(snapshot => {
+            console.log("createPing")
             snapshot.forEach(doc => {
               this.storyID = doc.id;
               this.isStoryVisible = true;
@@ -64,25 +96,60 @@ export default {
         })
       }
     },
-    showPings() {
-      db.collection("pings")
-        .get()
-        .then(pings => {
-          pings.docs.forEach(doc => {
-            if (doc.data().latitude && doc.data().longitude) {
-              let marker = new window.google.maps.Marker({
-                position: {
-                  lat: doc.data().latitude,
-                  lng: doc.data().longitude
-                },
-                map: this.map
-              });
-              this.addListenerToMarker(marker, doc)
-            }
-          });
-        });
+
+    setMapOnAllMarkers(){
+      for(let i=0;i<this.all_markers.length; i++)
+        this.all_markers[i].setMap(this.map)
+      
     },
-    getLocation() {
+    setMapOnFriendMarkers(){
+      let friendsArr = this.userDoc.friend_id
+      if(friendsArr === undefined){
+        console.log("You have no friends")
+        return
+      }
+      for(let i=0;i<this.all_markers.length;i++)
+      { 
+        if(friendsArr.includes(this.all_markers[i].user_id))
+          this.all_markers[i].setMap(this.map)
+        else
+          this.all_markers[i].setMap(null)
+      }
+    },
+    setMapOnBlockedMarkers(){
+      let blockedArr = this.userDoc.blocked_id
+      if(blockedArr === undefined){
+        console.log("You haven't blocked anyone")
+        return
+      }
+      for(let i=0;i<this.all_markers.length;i++)
+      { 
+        if(blockedArr.includes(this.all_markers[i].user_id))
+          this.all_markers[i].setMap(this.map)
+        else
+          this.all_markers[i].setMap(null)
+      }
+    },
+    showPings(){ //use this method to list pings on map (HAS FILTER)
+      console.log("showing pings")
+
+      if(this.filterValue == "all") this.setMapOnAllMarkers()
+      else if(this.filterValue == "friends") this.setMapOnFriendMarkers()
+      else if(this.filterValue == "blocked") this.setMapOnBlockedMarkers()
+    },
+    addPingToMap(ping){
+      let marker = new window.google.maps.Marker({
+        position: {
+          lat: ping.latitude,
+          lng: ping.longitude
+        },
+        map: this.map, //odma ga stavi na mapu (pr. pri mountu)
+        user_id: ping.user_id
+      })
+      this.addListenerToMarker(marker,ping)
+      this.all_markers.push(marker)
+    },
+    getLocation() { //updates user's lat, lng coordinates to current one's (IMPORTANT WHILE USER IS MOVING AROUND)
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           pos => {
@@ -114,7 +181,7 @@ export default {
         );
       }
     },
-    createPing(value, image) {
+    createPing(value, image) { //2nd parameter is not used at all, you have image in this.image
       this.getLocation();
       let marker = new window.google.maps.Marker({
         position: {
@@ -124,6 +191,8 @@ export default {
         map: this.map
       });
       this.addListenerToMarker(marker, null)
+      this.all_markers.push(marker)
+
       let found = false;
       db.collection('pings').get().then(pings => {
         pings.docs.forEach(doc => {
@@ -169,15 +238,46 @@ export default {
         minZoom: 3,
         streetViewControl: false
       });
+    },
+    userDocListener(){ //refreshes userDoc (coz new friends/blocked)
+      db
+      .collection("users")
+      .where("user_id","==",this.user.uid)
+      .onSnapshot(snapshot => {
+        snapshot.forEach(doc => {
+          this.userDoc = doc.data()
+          console.log("userDoc updated.", this.userDoc)
+        })
+      })
+    },
+    pingListener(){ //refreshes pings
+      db
+      .collection("pings")
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === "added") { //can add pings
+            this.addPingToMap(change.doc.data())
+            console.log("New ping: ", change.doc.data());
+          }
+          if (change.type === "modified") { //triggered when same user creates ping twice
+            console.log("Modified ping: ", change.doc.data());
+          }
+          if (change.type === "removed") { //currently cannot remove pings from db
+            console.log("Removed ping: ", change.doc.data());
+          }
+        });
+    });
     }
   },
   mounted() {
-    if (navigator.geolocation) {
+    this.userDocListener()
+    if (navigator.geolocation) { //location enabled
       navigator.geolocation.getCurrentPosition(
         pos => {
           this.lat = pos.coords.latitude;
           this.lng = pos.coords.longitude;
           this.renderMap();
+          this.pingListener()
         },
         err => {
           console.log(err);
@@ -190,12 +290,13 @@ export default {
       );
     } else {
       this.renderMap();
+      this.pingListener()
     }
   }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .google-map {
   width: 100%;
   height: 100%;
@@ -207,9 +308,20 @@ export default {
   z-index: -1;
 }
 
+.btn-group{
+  margin-right:16px;
+  float:right;
+}
+
+.btn-group ul li{
+  display:block;
+}
 .btn-floating {
-  position: sticky;
-  margin-top: 16px;
-  right: 10px;
+  display:block;
+  text-align:center;
+  margin: 16px 0px 16px 0px;
+  //position: sticky;
+  //margin-top: 16px;
+  //right: 10px;
 }
 </style>
