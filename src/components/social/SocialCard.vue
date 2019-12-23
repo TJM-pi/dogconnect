@@ -26,7 +26,7 @@
                         
 
                         <!-- uzmi lat, long, zoom i ispisi dolje string kao konkretnu lokaciju -->
-                        <p class="lokacijaP">Zadnje viđen na lokaciji: {{cur_user.geolocation.lat}}</p>
+                        <p class="lokacijaP">Zadnje viđen na lokaciji: {{curUserLoc()}}</p>
 
 
                     </div>
@@ -173,6 +173,12 @@ export default {
                         this.$emit('newUserDoc',newUserDoc)
                     })
                 })
+        },
+        curUserLoc(){
+            if(this.cur_user.geolocation)
+                return this.cur_user.geolocation.lat
+            else 
+                return "Nije ukljucio lokaciju"
         }
     },
 
