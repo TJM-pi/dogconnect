@@ -34,7 +34,7 @@ export default {
         loadGlobalHeatMapData(){
             this.heatMapData = []
             return db //vracas promise ovdje
-            .collection("pings")
+            .collection("archived-pings")
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
@@ -49,7 +49,7 @@ export default {
         loadYoursHeatMapData(){
             this.heatMapData = []
             return db
-            .collection("pings")
+            .collection("archived-pings")
             .where("user_id","==",this.user.uid)
             .get()
             .then(querySnapshot => {

@@ -17,13 +17,10 @@
         <li v-show="filterValue!='blocked'" class="btn blue" @click="change('blocked')">Blocked only</li>
         <li v-show="filterValue=='blocked'" class="btn grey" @click="change('blocked')" disabled>Blocked only</li>
       </ul>
-      
-      <!--<a v-show="!isModalVisible" class="btn-floating blue" @click="showPings" title="Refresh map, Calls showPings(), mouseover has been cut"> 
-        <i class="material-icons">refresh</i>
-      </a>-->
+      <a v-show="!isModalVisible" class="btn-floating red" @click="removePing"><i class="material-icons">delete</i></a>
     </div>
 
-    <Ping v-if="isModalVisible" @close="closeModal" @ping="createPing" @sent="storeImage"/>
+    <Ping v-if="isModalVisible" @close="closeModal" @ping="createPing"/>
     <Story v-if="isStoryVisible" :storyID="storyID" @close="closeModal" />
   </div>
 </template>
@@ -49,11 +46,10 @@ export default {
       isModalVisible: false,
       isStoryVisible: false,
       map: null,
-      all_markers: [], //u njemu se nalaze svi Marker(), pri dodavanju novog pinga ga je potrebno updatati || showPings iz njega filtrirano prikazuje na mapu
+      all_markers: [], //u njemu se nalaze svi Marker(), showPings iz njega filtrirano prikazuje na mapu
       user: firebase.auth().currentUser,
       userDoc: null,
       storyID: null,
-      image: "",
       filterDropdown: false,
       filterValue: "all"
     }
@@ -64,14 +60,10 @@ export default {
       else this.filterValue = value
       this.showPings()
     },
-    storeImage (value) {
-      this.image = value
-    },
     addListenerToMarker(marker, ping) { //implementacija click eventa pinga
-      if (ping) { //showPings
         marker.addListener("click", () => {
           db.collection("users")
-            .where("user_id", "==", ping.user_id)//ping.data().user_id)
+            .where("user_id", "==", ping.user_id)
             .get()
             .then(snapshot => {
               console.log("showPings")
@@ -81,26 +73,11 @@ export default {
               });
             });
         });
-      } else { //createPing
-        marker.addListener('click', () => {
-          db.collection('users')
-          .where('user_id', '==', this.user.uid)
-          .get()
-          .then(snapshot => {
-            console.log("createPing")
-            snapshot.forEach(doc => {
-              this.storyID = doc.id;
-              this.isStoryVisible = true;
-            })
-          })
-        })
-      }
     },
 
     setMapOnAllMarkers(){
       for(let i=0;i<this.all_markers.length; i++)
         this.all_markers[i].setMap(this.map)
-      
     },
     setMapOnFriendMarkers(){
       let friendsArr = this.userDoc.friend_id
@@ -181,45 +158,71 @@ export default {
         );
       }
     },
-    createPing(value, image) { //2nd parameter is not used at all, you have image in this.image
+    addPingToArchive(value,image){
+      db.collection('archived-pings').add({ //all pings for stats
+        latitude: this.lat,
+        longitude: this.lng,
+        user_id: this.user.uid,
+        story: value,
+        image: image,
+        dateCreated: firebase.firestore.Timestamp.now()
+      })
+    },
+    createPing(value, image) {
+      this.addPingToArchive(value,image);
       this.getLocation();
-      let marker = new window.google.maps.Marker({
-        position: {
-          lat: this.lat,
-          lng: this.lng
-        },
-        map: this.map
-      });
-      this.addListenerToMarker(marker, null)
-      this.all_markers.push(marker)
 
       let found = false;
-      db.collection('pings').get().then(pings => {
-        pings.docs.forEach(doc => {
-          if (doc.data().user_id == this.user.uid) {
-            db.collection('pings').doc(doc.id).update({
-              latitude: this.lat,
-              longitude: this.lng,
-              user_id: this.user.uid,
-              story: value,
-              image: this.image
-            })
-            found = true
-          }
-        })
-      }).then(() => {
-        if (!found) {
-          db.collection('pings').add({
+      for(let i=0;i<this.all_markers.length;i++)
+      {
+        if(this.all_markers[i].user_id === this.user.uid)
+        {
+          this.all_markers[i].setMap(null)
+          this.all_markers.splice(i,1)
+          found=true
+          break
+        }
+      }
+
+      if(!found){
+        db.collection('pings').add({ //pings for map (1 ping 1 person)
           latitude: this.lat,
           longitude: this.lng,
           user_id: this.user.uid,
           story: value,
-          image: this.image
+          image: image,
+          dateCreated: firebase.firestore.Timestamp.now()
         })
       }
-      })
+      else {
+        db.collection('pings').get().then(pings => { 
+          pings.docs.forEach(doc => {
+            if (doc.data().user_id == this.user.uid) {
+              db.collection('pings').doc(doc.id).update({
+                latitude: this.lat,
+                longitude: this.lng,
+                user_id: this.user.uid,
+                story: value,
+                image: image,
+                dateCreated: firebase.firestore.Timestamp.now()
+              })
+            }
+          })
+        })
+      }
       this.closeModal();
-      },
+    },
+    removePing(){
+      db
+      .collection("pings")
+      .where("user_id","==",this.user.uid)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          db.collection("pings").doc(doc.id).delete().then(() => console.log("Deleted."))
+        })
+      })
+    },
     showModal() {
       this.isModalVisible = true;
     },
@@ -257,17 +260,26 @@ export default {
         snapshot.docChanges().forEach(change => {
           if (change.type === "added") { //can add pings
             this.addPingToMap(change.doc.data())
-            console.log("New ping: ", change.doc.data());
+            //console.log("New ping: ", change.doc.data());
           }
           if (change.type === "modified") { //triggered when same user creates ping twice
+            this.addPingToMap(change.doc.data())
             console.log("Modified ping: ", change.doc.data());
           }
           if (change.type === "removed") { //currently cannot remove pings from db
             console.log("Removed ping: ", change.doc.data());
+            let deletedPing = change.doc.data()
+            for(let i=0;i<this.all_markers.length;i++){
+              if(this.all_markers[i].user_id === deletedPing.user_id){
+                this.all_markers[i].setMap(null)
+                this.all_markers.splice(i,1)
+                break
+              }
+            }
           }
         });
-    });
-    }
+      });
+    },
   },
   mounted() {
     this.userDocListener()
