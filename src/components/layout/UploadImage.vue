@@ -27,9 +27,6 @@ export default {
     };
   },
   methods: {
-    sendImage (event) {
-      this.$emit('send', this.imageData)
-    },
     getImage() {
       document.getElementById("selectedFile").click();
     },
@@ -40,14 +37,12 @@ export default {
 
         reader.onload = e => {
           this.imageData = e.target.result;
+          this.$emit('send', this.imageData)
         };
         reader.readAsDataURL(input.files[0]);
       }
     }
   },
-  destroyed() { //UploadImage is destroyed when parent's "Create" button is clicked
-    this.sendImage(event)
-  }
 };
 </script>
 

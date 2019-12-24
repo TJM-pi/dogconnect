@@ -36,27 +36,21 @@ export default {
         }
     },
     methods: {
-      sendImage (event) {
-          this.$emit('sent', this.image) //$emit activates parent event handler 'sent', sends this.image as parameter
-      },
       storeImage (value) {
           this.image = value;
       },
       close() {
         this.$emit('close'); 
       },
-      ping(event) {
+      ping() {
           if (this.story) {
             this.feedback = null
-            this.$emit('ping', this.story)
+            this.$emit('ping', this.story, this.image)
           } else {
               this.feedback = 'Please enter a story'
           }
       }
     },
-    destroyed() {
-        this.sendImage()
-    }
 }
 </script>
 
