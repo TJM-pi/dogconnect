@@ -21,7 +21,7 @@
         <ul class="right hide-on-small-only ultext">
           <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
           <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-          <li v-if="user && profile"><a href="">{{ profile.alias }}</a></li>
+          <li v-if="user && profile"><router-link :to="{name: 'Profile', params: {id: id}}">{{profile.alias}}</router-link></li>
           <li v-if="user"><a @click="logout">Logout</a></li>
         </ul>
 
@@ -36,7 +36,7 @@
         <ul v-if="!isHidden" class="right">
           <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
           <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-          <li v-if="user && profile"><a href="">{{ profile.alias }}</a></li>
+          <li v-if="user && profile"><router-link :to="{name: 'Profile', params: {id: id}}">{{profile.alias}}</router-link></li>
           <li v-if="user"><a @click="logout">Logout</a></li>
         </ul>
       </div>

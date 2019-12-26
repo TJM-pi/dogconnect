@@ -4,8 +4,8 @@
             <!--<h2 class="header">Horizontal Card</h2>-->
             <div class="card horizontal">
                 <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1499084732479-de2c02d45fcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" alt="">
-                    <!-- <img src="{{cur_user.image}}" alt="">-->
+                    <img v-if="cur_user.image" :src="cur_user.image" alt="">
+                    <img v-else src="https://www.blogsaays.com/wp-content/uploads/2014/02/no-user-profile-picture-whatsapp.jpg">
                 </div>
 
                 <div class="card-stacked">
@@ -13,8 +13,7 @@
                         <p v-show="alreadyFriend" style="float:right;">Friend</p>
                         <p v-show="alreadyBlocked" style="float:right;">Blocked</p>
                         <a href="#"> <h4 class="usernameH4">{{cur_user.alias}}</h4> </a>
-                        <p style="margin-bottom:15px;">Ovdje ide opis mog profila ako postoji.</p>
-                        <!-- <img src="{{cur_user.opis}}" alt="">-->
+                        <p style="margin-bottom:15px;">{{cur_user.description}}</p>
                     </div>
 
                     <div class="card-action">
@@ -24,7 +23,6 @@
                         <a v-show="!alreadyBlocked" @click="blockFriend" title="Block user" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">remove</i></a>
                         <a v-show="alreadyBlocked" @click="unBlock"  title="Unblock user" class="btn-floating btn-large waves-effect waves-light undoBTN"><i class="material-icons">remove</i></a>
                         
-
                         <!-- uzmi lat, long, zoom i ispisi dolje string kao konkretnu lokaciju -->
                         <p class="lokacijaP">Zadnje viđen na lokaciji: {{curUserLoc()}}</p>
 
