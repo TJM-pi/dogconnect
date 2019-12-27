@@ -1,32 +1,42 @@
 <template>
-  <transition name="modal-fade">
-    <div v-if="modalData" class="mod container">
-      <form class="card-panel">
-        <h2 class="center blue-text">{{ modalData.naslov }}</h2>
-        <div v-if="modalData.alias" class="field">
-          <label for="alias">New alias:</label>
-          <input type="text" name="alias" v-model="alias"/>
+<div class="modal fade" id="SettingsModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="ModalLabel">{{modalData.naslov}}</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div v-if="modalData.email" class="field">
-          <label for="email">New email:</label>
-          <input type="email" name="email" v-model="email"/>
+        <div class="modal-body">
+          <div v-if="modalData.alias" class="container">
+            <label for="alias"><h4>New alias</h4></label>
+            <input type="text" name="alias" v-model="alias" class="form-control"/>
+          </div>
+          <div v-if="modalData.email" class="container">
+            <label for="email"><h4>New email</h4></label>
+            <input type="email" name="email" v-model="email" class="form-control"/>
+          </div>
+          <div v-if="modalData.password" class="container">
+            <label for="alias"><h4>New password</h4></label>
+            <input type="password" name="password" v-model="password" class="form-control"/>
+          </div>
+          <div v-if="modalData.delete" class="container">
+            <h2>Are you sure?</h2>
+            <div class="btn-group">
+              <button class="btn btn-primary btn-lg mr-2" data-dismiss="modal" @click.prevent="close">Cancel</button>
+              <button class="btn btn-danger btn-lg" data-dismiss="modal" @click.prevent="change">Delete account</button>
+            </div>
+          </div>
+          <p v-if="feedback" style="color:red;">{{feedback}}</p>
         </div>
-        <div v-if="modalData.password" class="field">
-          <label for="password">New password:</label>
-          <input type="password" name="password" v-model="password"/>
+        <div v-if="!modalData.delete" class="modal-footer mt-3">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click.prevent="close">Cancel</button>
+            <button type="button" class="btn btn-primary" @click.prevent="change">Change</button>
         </div>
-        <div v-if="modalData.delete" class="field">
-          <button class="btn red" @click.prevent="change">Delete</button>
-          <button class="btn blue" @click.prevent="close">Cancel</button>
         </div>
-        <p class="red-text center" v-if="feedback">{{ feedback }}</p>
-        <div v-if="!modalData.delete" class="field">
-          <button class="btn blue" @click.prevent="change">Change</button>
-          <button class="btn blue" @click.prevent="close">Cancel</button>
-        </div>
-      </form>
     </div>
-  </transition>
+</div>
 </template>
 
 
@@ -85,30 +95,4 @@ export default {
 </script>
 
 <style>
-.modal-fade-enter,
-.modal-fade-leave-active {
-  opacity: 0;
-}
-
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.mod {
-  max-width: 400px;
-  margin-top: 60px;
-}
-
-.mod h2 {
-  font-size: 4.2em;
-}
-
-.mod .field {
-  margin-bottom: 16px;
-}
-
-.mod .btn {
-  margin-bottom: 16px;
-}
 </style>

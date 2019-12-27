@@ -1,10 +1,10 @@
 <template>
-    <div id="stats" class="container">
-        <h1>Statistics</h1>
-        <a v-show="statType == 'yours'" class="btn blue" @click="change('global')">Global</a>
-        <a v-show="statType == 'global'" class="btn" disabled> Global</a>
-        <a v-show="statType == 'global'" class="btn blue" @click="change('yours')">Yours</a>
-        <a v-show="statType == 'yours'" class="btn" disabled>Yours</a>
+    <div class="container">
+        <h1 class="text-center">Statistics</h1>
+        <div class="btn-group mb-2">
+            <button class="btn btn-primary mr-2" @click="change('global')">Global</button>
+            <button class="btn btn-primary" @click="change('yours')">Yours</button>
+        </div>
         <div class="google-map" id="map"></div>
     </div>
 </template>
@@ -126,8 +126,7 @@ export default {
     height: 65%;
     position: absolute;
 }
-.btn{
-    margin-bottom:10px;
-    margin-right:10px;
+.btn-group button{
+    border-radius: 0px !important;
 }
 </style>

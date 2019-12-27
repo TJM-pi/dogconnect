@@ -1,20 +1,20 @@
 <template>
-    <div class="view-profile container">
-        <div v-if="profile" class="card">
-            <h2 class="blue-text center">{{ profile.alias }}</h2>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="card col-sm-4 mt-4">
+            <img v-if="!loading && profile.image" width="80%" height="200" style="margin: 0 auto;"
+                :src="profile.image" alt="">
+            <div class="card-body text-center">
+                <h1 v-if="profile" class="card-title">{{profile.alias}}</h1>
+                <p v-if="!loading && profile.description" class="card-text">{{profile.description}}</p>
+
+                <div v-if="currentUser" class="btn-group-vertical">
+                    <button class="btn btn-primary btn-lg" @click="editInfo">Edit personal info</button>
+                    <button class="btn btn-primary btn-lg mt-2" @click="settings">Edit settings</button>
+                </div>
+            </div>
         </div>
-        <div v-if="!loading && profile.description" class="field center">
-            <p>{{ profile.description }}</p>
-        </div>
-        <div class="image-preview" v-if="!loading && profile.image">
-             <img class="preview" :src="profile.image" />
-        </div>
-        <div v-if="currentUser" class="field center">
-            <button class="btn blue" @click="editInfo">Edit personal info</button>
-        </div>
-        <div v-if="currentUser" class="field center">
-            <button class="btn blue" @click="settings">Settings</button>
-        </div>
+        <div class="col-sm-4"></div>
     </div>
 </template>
 
@@ -53,21 +53,6 @@ export default {
 }
 </script>
 
-<style>
-.view-profile {
-    max-width: 400px;
-    margin-top: 60px;
-}
+<style lang="scss" scoped>
 
-.view-profile h2 {
-    font-size: 4.2em;
-}
-
-.view-profile .field {
-    margin-bottom: 16px;
-}
-
-.view-profile .btn {
-    width: 200px;
-}
 </style>

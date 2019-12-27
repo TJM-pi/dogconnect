@@ -1,21 +1,24 @@
 <template>
-    <div class="settings container">
-        <div v-if="profile" class="card">
-            <h2 class="blue-text center">{{ profile.alias }}</h2>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="card col-sm-4 mt-4">
+            <div class="card-body text-center">
+                <h1 class="card-title">Settings</h1>
+                <div class="btn-group-vertical">
+                    <button class="btn btn-primary btn-lg mb-2" @click.prevent="showModal('alias')"
+                    data-toggle="modal" data-target="#SettingsModal">Change alias</button>
+                    <button class="btn btn-primary btn-lg mb-2" @click.prevent="showModal('email')"
+                    data-toggle="modal" data-target="#SettingsModal">Change email</button>
+                    <button class="btn btn-primary btn-lg mb-2" @click.prevent="showModal('password')"
+                    data-toggle="modal" data-target="#SettingsModal">Change password</button>
+                    <button class="btn btn-danger  btn-lg mb-2" @click.prevent="showModal('delete')"
+                    data-toggle="modal" data-target="#SettingsModal">Delete account</button>
+                </div>
+
+                <Modal v-if="isModalVisible" :modalData="modalData" @change="changeData"/>
+            </div>
         </div>
-        <div class="field center">
-            <button class="btn blue" @click.prevent="showModal('alias')">Change alias</button>
-        </div>
-        <div class="field center">
-            <button class="btn blue" @click.prevent="showModal('email')">Change email</button>
-        </div>
-        <div class="field center">
-            <button class="btn blue" @click.prevent="showModal('password')">Change password</button>
-        </div>
-        <div class="field center">
-            <button class="btn red" @click.prevent="showModal('delete')">Delete account</button>
-        </div>
-        <Modal v-if="isModalVisible" :modalData="modalData" @close="closeModal" @change="changeData"/>
+        <div class="col-sm-4"></div>
     </div>
 </template>
 
@@ -169,22 +172,5 @@ export default {
     }
 }
 </script>
-
 <style>
-.settings {
-    max-width: 400px;
-    margin-top: 60px;
-}
-
-.settings h2 {
-    font-size: 4.2em;
-}
-
-.settings .field {
-    margin-bottom: 16px;
-}
-
-.settings .btn {
-    width: 200px;
-}
 </style>

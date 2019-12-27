@@ -1,20 +1,24 @@
 <template>
-    <div class="info container">
-        <div v-if="profile" class="card">
-            <h2 class="blue-text center">{{ profile.alias }}</h2>
+   <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="card col-sm-4 mt-4">
+            <div class="card-body text-center">
+                <h1>Edit personal info</h1>
+                <!--<h3 v-if="profile" class="card-title">{{profile.alias}}</h3>-->
+                <img v-if="image.length>0" :src="image" width="80%" height="200" style="margin: 0 auto;" class="mt-4">
+                <h6 class="mt-4">Description: </h6>
+                <div class="input-group">
+                    <textarea v-model="description" name="desc" id="desc" cols="30" rows="2" class="form-control"></textarea>
+                </div>
+                <UploadImage @send="storeImage"/>
+                <div class="btn-group">
+                    <button class="btn btn-danger btn-md mr-2" @click.prevent="close">Cancel</button>
+                    <button class="btn btn-primary btn-md mr-2" @click.prevent="confirm">Confirm</button>
+                    <button  v-if="confirmed" class="btn btn-primary btn-md" @click.prevent="change">Go to profile</button>
+                </div>
+            </div>
         </div>
-        <div class="field center">
-            <label for="description">Description:</label>
-            <input type="text" name="description" v-model="description">
-        </div>
-        <div class="field">
-            <UploadImage @send="storeImage"/>
-        </div>
-        <div class="field">
-          <button class="btn blue" @click.prevent="confirm">Confirm</button>
-          <button v-if="confirmed" class="btn blue" @click.prevent="change">Go to profile</button>
-          <button class="btn blue" @click.prevent="close">Cancel</button>
-        </div>
+        <div class="col-sm-4"></div>
     </div>
 </template>
 
@@ -30,6 +34,7 @@ export default {
     },
     data() {
         return {
+            profile_: null,
             confirmed: false,
             description: null,
             image: ""
@@ -59,21 +64,12 @@ export default {
         storeImage(value) {
             this.image = value
         }
+    },
+    mounted(){
+        this.profile_ = this.profile
     }
 }
 </script>
 
 <style>
-.info {
-    max-width: 400px;
-    margin-top: 60px;
-}
-
-.info h2 {
-    font-size: 4.2em;
-}
-
-.info .field {
-    margin-bottom: 16px;
-}
 </style>

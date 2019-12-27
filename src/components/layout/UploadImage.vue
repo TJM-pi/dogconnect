@@ -1,20 +1,14 @@
 <template>
-<transition name="modal-fade">
-  <div class="image container">
+<div class="container-fluid" style="text-align:center;">
     <input
       type="file"
+      class="form-control-file"
       id="selectedFile"
       @change="previewImage"
       accept="image/*"
     />
-    <div class="field">
-      <button class="btn blue" @click.prevent="getImage">Image</button>
-    </div>
-    <div class="image-preview" v-if="imageData.length > 0">
-      <img class="preview" :src="imageData" />
-    </div>
-  </div>
-</transition>
+    <button type="button" class="btn btn-primary" @click.prevent="getImage">Upload image</button>
+</div>
 </template>
 
 <script>
@@ -47,15 +41,6 @@ export default {
 </script>
 
 <style lang="scss">
-.modal-fade-enter,
-.modal-fade-leave-active {
-    opacity: 0;
-}
-
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-    transition: opacity 1s ease;
-}
 
 .image .image-preview{
   text-align: center;
@@ -71,18 +56,14 @@ export default {
 #selectedFile {
   display: none;
 }
-
+.btn{
+  margin-top:15px;
+}
 .image {
     max-width: 400px;
     margin-top: 60px;
 }
-
 .image h2 {
     font-size: 4.2em;
-}
-
-.image .btn {
-  margin-left: 80px;
-  margin-top: -80px;
 }
 </style>

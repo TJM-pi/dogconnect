@@ -1,27 +1,24 @@
 [<template>
-  <div class="map">
+  <div class="container-fluid map">
     <div class="google-map" id="map"></div>
 
-    <div class="btn-group">
-      <a v-show="!isModalVisible" class="btn-floating yellow" @click="showModal">
-        <i class="material-icons">add</i>
-      </a>
-      <a v-show="!isModalVisible" class="btn-floating yellow" @click="filterDropdown = !filterDropdown">
-        <i class="material-icons">sort</i>
-      </a>
-      <ul v-show="filterDropdown">
-        <li v-show="filterValue!='all'" class="btn blue" @click="change('all')">All</li>
-        <li v-show="filterValue=='all'" class="btn grey" @click="change('all')" disabled>All</li>
-        <li v-show="filterValue!='friends'" class="btn blue" @click="change('friends')">Friends only</li>
-        <li v-show="filterValue=='friends'" class="btn grey" @click="change('friends')" disabled>Friends only</li>
-        <li v-show="filterValue!='blocked'" class="btn blue" @click="change('blocked')">Blocked only</li>
-        <li v-show="filterValue=='blocked'" class="btn grey" @click="change('blocked')" disabled>Blocked only</li>
-      </ul>
-      <a v-show="!isModalVisible" class="btn-floating red" @click="removePing"><i class="material-icons">delete</i></a>
+    <div class="btn-group-vertical" >
+      <button class="btn btn-primary btn-lg" @click="showModal" data-toggle="modal" data-target="#PingModal"><i class="fas fa-plus"></i></button>
+      <div class="dropleft">
+        <button class="btn btn-primary btn-lg" id="dropdownFilter" data-toggle="dropdown"><i class="fas fa-filter"></i></button>
+        <div class="dropdown-menu">
+          <a v-show="filterValue!='all'" href="" class="dropdown-item" @click.prevent="change('all')">All</a>
+          <a v-show="filterValue=='all'" href="" class="dropdown-item disabled">All</a>
+          <a v-show="filterValue!='friends'" href="" class="dropdown-item"  @click.prevent="change('friends')">Friends</a>
+          <a v-show="filterValue=='friends'" href="" class="dropdown-item disabled">Friends</a>
+          <a v-show="filterValue!='blocked'" href="" class="dropdown-item"  @click.prevent="change('blocked')">Blocked</a>
+          <a v-show="filterValue=='blocked'" href="" class="dropdown-item disabled">Blocked</a>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-lg"><i class="fas fa-trash"></i></button>
     </div>
-
     <Ping v-if="isModalVisible" @close="closeModal" @ping="createPing"/>
-    <Story v-if="isStoryVisible" :storyID="storyID" @close="closeModal" />
+    <Story v-if="isStoryVisible" :storyID="storyID" @close="closeModal"/>
   </div>
 </template>
 
@@ -320,20 +317,12 @@ export default {
   z-index: -1;
 }
 
-.btn-group{
-  margin-right:16px;
+.btn-group-vertical{
   float:right;
+  margin: 10px 10px 0px 0px;
 }
-
-.btn-group ul li{
-  display:block;
-}
-.btn-floating {
-  display:block;
-  text-align:center;
-  margin: 16px 0px 16px 0px;
-  //position: sticky;
-  //margin-top: 16px;
-  //right: 10px;
+.btn-group-vertical .btn{
+  margin-top: 20px;
+  border-radius:50% !important;
 }
 </style>

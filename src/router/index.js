@@ -100,7 +100,7 @@ const routes = [
       requiresAuth: true
     },
     props: true
-  }
+  },
 ]
 
 const router = new VueRouter({

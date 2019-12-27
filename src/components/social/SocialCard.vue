@@ -1,33 +1,26 @@
 <template>
-    <div class="container">
-        <div class="col sm12 m7">
-            <!--<h2 class="header">Horizontal Card</h2>-->
-            <div class="card horizontal">
-                <div class="card-image">
-                    <img v-if="cur_user.image" :src="cur_user.image" alt="">
-                    <img v-else src="https://www.blogsaays.com/wp-content/uploads/2014/02/no-user-profile-picture-whatsapp.jpg">
-                </div>
-
-                <div class="card-stacked">
-                    <div class="card-content">
-                        <p v-show="alreadyFriend" style="float:right;">Friend</p>
-                        <p v-show="alreadyBlocked" style="float:right;">Blocked</p>
-                        <a href="#"> <h4 class="usernameH4">{{cur_user.alias}}</h4> </a>
-                        <p style="margin-bottom:15px;">{{cur_user.description}}</p>
-                    </div>
-
-                    <div class="card-action">
-                        <a v-show="!alreadyFriend" @click="addFriend" title="Add user as a friend" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
-                        <a v-show="alreadyFriend" @click="unFriend"  title="Unfriend user" class="btn-floating btn-large waves-effect waves-light undoBTN"><i class="material-icons">add</i></a>
-
-                        <a v-show="!alreadyBlocked" @click="blockFriend" title="Block user" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">remove</i></a>
-                        <a v-show="alreadyBlocked" @click="unBlock"  title="Unblock user" class="btn-floating btn-large waves-effect waves-light undoBTN"><i class="material-icons">remove</i></a>
-                        
-                        <!-- uzmi lat, long, zoom i ispisi dolje string kao konkretnu lokaciju -->
-                        <p class="lokacijaP">Zadnje viđen na lokaciji: {{curUserLoc()}}</p>
-
-
-                    </div>
+    <div class="col-sm-4 mt-4" style="display:inline-block;">
+        <div class="card">
+            <img v-if="cur_user.image" width="100%" height="200" :src=cur_user.image alt="">
+            <img v-else width="100%" height="200" src="https://images.unsplash.com/photo-1499084732479-de2c02d45fcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" alt="">
+            <div class="card-body text-center">
+                <p v-show="alreadyFriend" style="padding:0px; margin:0px; text-align:left;">Friend</p>
+                <p v-show="alreadyBlocked" style="padding:0px; margin:0px; text-align:left;">Blocked</p>
+              
+                <h5 class="card-title">{{cur_user.alias}}</h5>
+                <p class="card-text">{{cur_user.description}}</p>
+              
+            </div>
+            <div class="card-footer text-center">
+                  <div class="btn-group">
+                    <button v-show="!alreadyFriend" @click="addFriend" title="Add user as a friend"
+                        class="btn btn-primary btn-lg mr-2"><i class="fas fa-plus"></i></button>
+                    <button v-show="alreadyFriend" @click="unFriend" title="Unfriend user"
+                        class="btn btn-secondary btn-lg mr-2"><i class="fas fa-plus"></i></button>
+                    <button v-show="!alreadyBlocked" @click="blockFriend" title="Block user"
+                        class="btn btn-danger btn-lg"><i class="fas fa-minus"></i></button>
+                    <button v-show="alreadyBlocked" @click="unBlock" title="Unblock user"
+                        class="btn btn-secondary btn-lg"><i class="fas fa-minus"></i></button>
                 </div>
             </div>
         </div>
@@ -204,38 +197,7 @@ export default {
 </script>
 
 <style lang="scss">
-    .card-image{
-        width:20%;
-        height:auto !important;
-    }
-    .card-image img{
-        height:100%;
-        width:100% !important;
-    }
-
-    .card-action{
-        padding:0px !important;
-        text-align:right;
-    }
-
-    .card-action a{
-        margin: 10px 15px 10px 10px;
-    }
-
-    .usernameH4{
-        margin: 0px 0px 10px 0px;
-        font-weight:600;
-    }
-
-    .lokacijaP{
-        margin:5px 10px 10px 0px;
-        color:gray;
-    }
-    .undoBTN{
-        background-color:lightgray;
-    }
-    .undoBTN:hover{
-        background-color:lightgray !important;
-    }
-
+.card-footer .btn-group .btn{
+    border-radius: 50% !important;
+}
 </style>
