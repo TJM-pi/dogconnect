@@ -172,9 +172,5 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.btn-group-vertical button{
-    border-radius: 0px !important;
-}
+<style>
 </style>

@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Map from '@/components/home/Map'
+import Ping from '@/components/home/Ping'
+import Story from '@/components/home/Story'
 import Social from '@/components/social/Social'
 import Stats from '@/components/stats/Stats'
 import Signup from '@/components/auth/Signup'
 import Login from '@/components/auth/Login'
-import Ping from '@/components/home/Ping'
-import Story from '@/components/home/Story'
 import Profile from '@/components/profile/Profile'
 import Settings from '@/components/profile/Settings'
 import Modal from '@/components/profile/Modal'
@@ -71,7 +71,7 @@ const routes = [
     component: Profile,
     meta: {
       requiresAuth: true
-    }
+    },
   },
   {
     path: '/profile/:id/settings',
