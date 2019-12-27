@@ -1,16 +1,16 @@
 <template>
-    <div id="social" class="container">
-        <h1>hey</h1>
-        <a @click="filterDropdown = !filterDropdown" class="dropdown-trigger btn blue" data-target="dropdown1">filter</a>
-        <ul v-show="filterDropdown">
-            <li v-show="filterBy !== 'friend'"><a @click="change('friend')" class="btn blue">Friends only</a></li>
-            <li v-show="filterBy === 'friend'"><a @click="change('friend')" class="btn grey">Friends only</a></li>
-            <li v-show="filterBy !== 'blocked'"><a @click="change('blocked')" class="btn red"> Blocked only</a></li>
-            <li v-show="filterBy === 'blocked'"><a @click="change('blocked')" class="btn grey"> Blocked only</a></li>
-
-            <li>Search: <input v-model="searchTerm" type="search" style="width:40%;"></li>
-        </ul>
-
+    <div class="container">
+        <h1 class="text-center">Social</h1>
+        <div class="btn-toolbar mb-2">
+            <div class="btn-group">
+                <button class="btn btn-primary mr-2" @click="change('all')">All</button>
+                <button class="btn btn-primary mr-2" @click="change('friend')">Friends only</button>
+                <button class="btn btn-danger mr-2"  @click="change('blocked')">Blocked only</button>
+            </div>
+            <div class="input-group">
+                <input v-model="searchTerm" type="text" class="form-control" placeholder="Search user">
+            </div>
+        </div>
         <SocialCard v-for="user in filteredUsers" :key="user.user_id" :cur_user="user" 
                     @newUserDoc="updateUserDoc"/>
     </div>
@@ -42,8 +42,9 @@ export default {
     methods: {
         change(clickValue){
             console.log(clickValue)
-            if(this.filterBy === clickValue) this.filterBy = false
-            else this.filterBy = clickValue
+            //if(this.filterBy === clickValue) this.filterBy = false
+            //else this.filterBy = clickValue
+            this.filterBy = clickValue
         },
 
         removeFromArr(array, item){
@@ -111,13 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .card-image{
-        width:20%;
-        height:150px;
-    }
-    .card-image img{
-        height:100%;
-        width:100% !important;
-    }
-
+.btn{
+    margin-top:0px;
+}
 </style>

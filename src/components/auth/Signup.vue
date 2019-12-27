@@ -1,25 +1,29 @@
 <template>
-    <div class="signup container">
-        <form class="card-panel" @submit.prevent="signup">
-            <h2 class="center blue-text">Signup</h2>
-            <div class="field">
-                <label for="email">Email:</label>
-                <input type="email" name="email" v-model="email">
+<div class="row mt-4">
+    <div class="col-sm-4"></div>
+    <form class="card col-sm-4" @click.prevent="signup">
+        <div class="card-body">
+            <h1 class="card-title text-center">Signup</h1>
+            <div class="form-group">
+                <label for="InputAlias">Alias:</label>
+                <input type="text" class="form-control" id="InputAlias" placeholder="Enter alias" v-model="alias">
             </div>
-            <div class="field">
-                <label for="password">Password:</label>
-                <input type="password" name="password" v-model="password">
+            <div class="form-group">
+                <label for="InputEmail">Email address:</label>
+                <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" v-model="email">
             </div>
-            <div class="field">
-                <label for="alias">Alias:</label>
-                <input type="text" name="alias" v-model="alias">
+            <div class="form-group">
+                <label for="InputPass">Password:</label>
+                <input type="password" class="form-control" id="InputPass" placeholder="Password" v-model="password">
             </div>
-            <p class="red-text center" v-if="feedback">{{ feedback }}</p>
-            <div class="field center">
-                <button class="btn blue">Signup</button>
+            <div style="text-align:center;">
+                <button type="submit" id="asd" class="btn btn-primary btn-lg">Signup</button>
+                <p v-if="feedback" style="color:red; margin:0px;" class="mt-3">{{feedback}}</p>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+    <div class="col-sm-4"></div>
+</div>
 </template>
 
 <script>

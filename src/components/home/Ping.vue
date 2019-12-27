@@ -1,23 +1,28 @@
 <template>
-  <transition name="modal-fade">
-      <div class="ping container">
-        <form class="card-panel">
-            <h2 class="center blue-text">Ping</h2>
-            <div class="field">
-                <label for="text">Story:</label>
-                <input type="text" name="story" v-model="story">
-            </div>
-            <div class="field">
-                <UploadImage @send="storeImage"/>
-            </div>
-            <p class="red-text center" v-if="feedback">{{ feedback }}</p>
-            <div class="field">
-                <button class="btn blue" @click.prevent="ping">Create</button>
-                <button class="btn blue" @click.prevent="close">Cancel</button>
-            </div>
-        </form>
+<div class="modal fade" id="PingModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Create Ping</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img v-if="image.length>0" :src="image" class="preview-image">
+        <h6>Story: </h6>
+        <div class="input-group">
+          <textarea v-model="story" name="story" id="story" cols="30" rows="2" class="form-control"></textarea>
+        </div>
+        <UploadImage @send="storeImage"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" @click.prevent="ping">Create</button>
+      </div>
     </div>
-  </transition>
+  </div>
+</div>
 </template>
 
 <script>
@@ -43,6 +48,7 @@ export default {
         this.$emit('close'); 
       },
       ping() {
+          console.log("here", this.story)
           if (this.story) {
             this.feedback = null
             this.$emit('ping', this.story, this.image)
@@ -55,30 +61,11 @@ export default {
 </script>
 
 <style lang="scss">
-.modal-fade-enter,
-.modal-fade-leave-active {
-    opacity: 0;
-}
 
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-    transition: opacity .5s ease
-}
-
-.ping {
-    max-width: 400px;
-    margin-top: 60px;
-}
-
-.ping h2 {
-    font-size: 4.2em;
-}
-
-.ping .field {
-    margin-bottom: 16px;
-}
-
-.ping .btn {
-    margin-right: 10px;
+.preview-image{
+  width:100%;
+  max-height:300px;
+  border:1px solid white;
+  margin-bottom: 10px;
 }
 </style>

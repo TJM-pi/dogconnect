@@ -1,48 +1,29 @@
 <template>
-  <div class="navbar">
-    <nav class="blue darken-1">
-      <div class="container nav-wrapper">
-        <router-link :to="{ name: 'Map' }" class="brand-logo left" style="font-size:2vw;">
-          Dogconnect!
-        </router-link>
-         
-         <ul class="nav-wrapper center-nav hide-on-small-only ultext">
-          <li><router-link :to="{ name: 'Map' }"> Mapa</router-link></li>
-          <li><router-link :to="{ name: 'Social' }">Social</router-link></li>
-          <li><router-link :to="{ name: 'Stats' }">Stats</router-link></li>
-        </ul>
+  <div class="container-fluid" style="padding:0px;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a href="#" class="navbar-brand w-50 mr-auto">Dogconnect</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <ul class="nav-wrapper center-nav hide-on-med-and-up">
-          <li><router-link :to="{ name: 'Social' }"><i class="material-icons">people</i></router-link></li>
-          <li><router-link :to="{ name: 'Map' }"><i class="material-icons">public</i></router-link></li>
-          <li><router-link :to="{ name: 'Stats' }"><i class="material-icons">show_chart</i></router-link></li>
+      <div class="collapse navbar-collapse w-100" id="navbarContent">
+        <ul class="navbar-nav w-100 justify-content-center">
+          <li class="nav-item active"><router-link :to="{name: 'Map'}" class="nav-link">Mapa</router-link></li>
+          <li class="nav-item"><router-link :to="{name: 'Social'}" class="nav-link">Social</router-link></li>
+          <li class="nav-item"><router-link :to="{name: 'Stats'}" class="nav-link">Statistics</router-link></li>
         </ul>
-
-        <ul class="right hide-on-small-only ultext">
-          <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
-          <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-          <li v-if="user && profile"><a href="">{{ profile.alias }}</a></li>
-          <li v-if="user"><a @click="logout">Logout</a></li>
+        <ul v-if="profile" class="navbar-nav w-100 ml-auto justify-content-end">
+          <li class="nav-item active"><router-link :to="{name: 'Profile', params: {id: id}}" class="nav-link">{{profile.alias}}</router-link></li>
+          <li class="nav-item"><a href="" class="nav-link"  @click="logout">Logout</a></li>
         </ul>
-
-        <ul class="right hide-on-med-and-up">
-          <li v-on:click="isHidden = !isHidden"><a href="#"><i class="material-icons">menu</i></a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <nav v-if="!isHidden" class="navbar blue darken-2 hide-on-med-and-up">
-      <div class="container nav-wrapper">
-        <ul v-if="!isHidden" class="right">
-          <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
-          <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-          <li v-if="user && profile"><a href="">{{ profile.alias }}</a></li>
-          <li v-if="user"><a @click="logout">Logout</a></li>
+        <ul v-if="!profile" class="navbar-nav w-100 ml-auto justify-content-end">
+          <li class="nav-item active"><router-link :to="{name: 'Login'}" class="nav-link">Login</router-link></li>
+          <li class="nav-item active"><router-link :to="{name: 'Signup'}" class="nav-link">Signup</router-link></li>
         </ul>
       </div>
     </nav>
   </div>
-
 </template>
 
 <script>

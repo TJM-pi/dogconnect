@@ -1,27 +1,30 @@
 <template>
-    <div class="login container">
-        <form class="card-panel" @click.prevent="login">
-            <h2 class="center blue-text">Login</h2>
-            <div class="field">
-                <label for="email">Email:</label>
-                <input type="email" name="email" v-model="email">
+<div class="row mt-4">
+    <div class="col-sm-4"></div>
+    <form class="card col-sm-4" @click.prevent="login">
+        <div class="card-body">
+            <h1 class="card-title text-center">Login</h1>
+            <div class="form-group">
+                <label for="InputEmail">Email address:</label>
+                <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" v-model="email">
             </div>
-            <div class="field">
-                <label for="password">Password:</label>
-                <input type="password" name="password" v-model="password">
+            <div class="form-group">
+                <label for="InputPass">Password:</label>
+                <input type="password" class="form-control" id="InputPass" placeholder="Password" v-model="password">
             </div>
-            <p class="red-text center" v-if="feedback">{{ feedback }}</p>
-            <div class="field">
-                <button class="btn blue">Login</button>
+            <div style="text-align:center;">
+                <button type="submit" id="asd" class="btn btn-primary btn-lg">Login</button>
+                <p v-if="feedback" style="color:red; margin:0px;" class="mt-3">{{feedback}}</p>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+    <div class="col-sm-4"></div>
+</div>
 </template>
 
 <script>
 /* eslint-disable no-unused-vars */
 import firebase from 'firebase'
-
 export default {
     name: 'Login',
     data () {
@@ -52,16 +55,9 @@ export default {
 </script>
 
 <style>
-.login {
-    max-width: 400px;
-    margin-top: 60px;
-}
-
-.login h2 {
-    font-size: 4.2em;
-}
-
-.login .field {
-    margin-bottom: 16px;
+#asd{
+    text-align:center;
+    margin: 0 auto;
+    justify-content: center;
 }
 </style>
