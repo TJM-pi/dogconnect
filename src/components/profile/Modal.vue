@@ -32,7 +32,7 @@
         </div>
         <div v-if="!modalData.delete" class="modal-footer mt-3">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click.prevent="close">Cancel</button>
-            <button type="button" class="btn btn-primary" @click.prevent="change">Change</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click.prevent="change">Change</button>
         </div>
         </div>
     </div>

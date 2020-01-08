@@ -3,7 +3,7 @@
         <h1 class="text-center">Statistics</h1>
         <div class="btn-group mb-2">
             <button class="btn btn-primary mr-2" @click="change('global')">Global</button>
-            <button class="btn btn-primary" @click="change('yours')">Yours</button>
+            <button class="btn btn-primary" @click="change('yours')">Personal</button>
         </div>
         <div class="google-map" id="map"></div>
     </div>

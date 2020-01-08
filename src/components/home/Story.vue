@@ -4,7 +4,7 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="ModalLabel">{{storyID}}'s Story</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -14,7 +14,7 @@
             <p>{{story}}</p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">Cancel</button>
             <router-link :to="{ name: 'Profile', params: {id: storyID}}" class="btn btn-primary" data-dismiss="modal">{{storyID}}'s profile</router-link>
         </div>
         </div>
