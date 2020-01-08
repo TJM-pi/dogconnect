@@ -15,7 +15,7 @@
           <a v-show="filterValue=='blocked'" href="" class="dropdown-item disabled">Blocked</a>
         </div>
       </div>
-      <button class="btn btn-danger btn-lg"><i class="fas fa-trash"></i></button>
+      <button class="btn btn-danger btn-lg" @click="removePing"><i class="fas fa-trash"></i></button>
     </div>
     <Ping v-if="isModalVisible" @close="closeModal" @ping="createPing"/>
     <Story v-if="isStoryVisible" :storyID="storyID" @close="closeModal"/>
