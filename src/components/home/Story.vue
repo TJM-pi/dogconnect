@@ -58,6 +58,9 @@ export default {
       }
     },
     mounted(){
+        window.addEventListener('keydown', (e) => { //da mozes zatvoriti modal sa Esc key-em bez bug-ova 
+            if (e.key == 'Escape') {this.close()}
+        });
         this.loadStory()
     },
     beforeUpdate () {
