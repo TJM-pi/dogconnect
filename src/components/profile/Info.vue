@@ -72,16 +72,4 @@ export default {
 </script>
 
 <style>
-.info {
-    max-width: 400px;
-    margin-top: 60px;
-}
-
-.info h2 {
-    font-size: 4.2em;
-}
-
-.info .field {
-    margin-bottom: 16px;
-}
 </style>

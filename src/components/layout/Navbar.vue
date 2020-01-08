@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" style="padding:0px;">
+   <div class="container-fluid" style="padding:0px;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a href="#" class="navbar-brand w-50 mr-auto">Dogconnect</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
@@ -12,6 +12,7 @@
           <li class="nav-item active"><router-link :to="{name: 'Map'}" class="nav-link">Mapa</router-link></li>
           <li class="nav-item"><router-link :to="{name: 'Social'}" class="nav-link">Social</router-link></li>
           <li class="nav-item"><router-link :to="{name: 'Stats'}" class="nav-link">Statistics</router-link></li>
+          
         </ul>
         <ul v-if="profile" class="navbar-nav w-100 ml-auto justify-content-end">
           <li class="nav-item active"><router-link :to="{name: 'Profile', params: {id: id}}" class="nav-link">{{profile.alias}}</router-link></li>
