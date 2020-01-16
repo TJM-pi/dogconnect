@@ -1,8 +1,8 @@
 <template>
-    <div class="container">
-        <h1 class="text-center">Statistics</h1>
+    <div class="container mb-5">
+        <h1 class="text-center mt-4">Statistics</h1>
         <div class="btn-group mb-2">
-            <button class="btn btn-primary mr-2" @click="change('global')">Global</button>
+            <button class="btn btn-primary mr-2" @click="change('global')" >Global</button>
             <button class="btn btn-primary" @click="change('yours')">Personal</button>
         </div>
         <div class="google-map" id="map"></div>
@@ -72,10 +72,11 @@ export default {
         renderMap(){
             this.map = new window.google.maps.Map(document.getElementById("map"), {
                 center:{
-                    lat: this.lat,
-                    lng: this.lng
+                    lat: (this.lat == null) ? 45.7938097:this.lat,
+                    lng: (this.lng == null) ? 15.986541:this.lng
                 },
                 zoom: 13,
+                gestureHandling: 'greedy',
                 streetViewControl: false
             })
         },
@@ -89,6 +90,7 @@ export default {
                     },
                     err => {
                         console.log(err)
+                        this.renderMap()
                     },
                     {
                         maximumAge: 60000,
@@ -122,11 +124,14 @@ export default {
 
 <style lang="scss" scoped>
 .google-map {
-    width: 70%;
-    height: 65%;
-    position: absolute;
+    width: 100% !important;
+    height: 600px;
+    //position: absolute;
 }
-.btn-group button{
-    border-radius: 0px !important;
+
+.btn-primary:focus{
+    color: #fff;
+    background-color:#0062cc !important;
+    border-color:#005cbf;
 }
 </style>

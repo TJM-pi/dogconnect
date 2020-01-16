@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Map from '@/components/home/Map'
 import Ping from '@/components/home/Ping'
 import Story from '@/components/home/Story'
+import Remove from '@/components/home/Remove'
 import Social from '@/components/social/Social'
 import Stats from '@/components/stats/Stats'
 import Signup from '@/components/auth/Signup'
@@ -36,6 +37,11 @@ const routes = [
         path: 'story/:id',
         name: 'Story',
         component: Story
+      },
+      {
+        path: '/remove',
+        name: 'Remove',
+        component: Remove
       }
     ]
   },

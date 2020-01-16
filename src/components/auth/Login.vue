@@ -1,7 +1,7 @@
 <template>
-<div class="row mt-4">
-    <div class="col-sm-4"></div>
-    <form class="card col-sm-4" @click.prevent="login">
+<div class="row mt-4" style="margin: 0 auto;">
+    <div class="col-lg-4 col-sm-2 col-1"></div>
+    <form class="card col-lg-4 col-sm-8 col-10" @click.prevent="login">
         <div class="card-body">
             <h1 class="card-title text-center">Login</h1>
             <div class="form-group">
@@ -18,7 +18,7 @@
             </div>
         </div>
     </form>
-    <div class="col-sm-4"></div>
+    <div class="col-lg-4 col-sm-2 col-1"></div>
 </div>
 </template>
 

@@ -1,26 +1,28 @@
 <template>
-    <div class="col-sm-4 mt-4" style="display:inline-block;">
-        <div class="card">
-            <img v-if="cur_user.image" width="100%" height="200" :src=cur_user.image alt="">
-            <img v-else width="100%" height="200" src="https://images.unsplash.com/photo-1499084732479-de2c02d45fcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" alt="">
+    <div class="col-lg-4 col-md-6 col-12 mt-4 mb-4">
+        <div class="card h-100 shadow rounded">
+            <img v-if="cur_user.image" class="rounded-top" width="100%" height="250" :src=cur_user.image alt="">
+            <img v-else width="100%"  class="rounded-top"  height="250" src="https://cdn.steemitimages.com/DQmbQGsqqhgTgZK2Wh4o3o9pALrNqPVryT3AH17J4WExoqS/no-image-available-grid.jpg" alt="">
             <div class="card-body text-center">
-                <p v-show="alreadyFriend" style="padding:0px; margin:0px; text-align:left;">Friend</p>
-                <p v-show="alreadyBlocked" style="padding:0px; margin:0px; text-align:left;">Blocked</p>
-              
-                <h5 class="card-title">{{cur_user.alias}}</h5>
-                <p class="card-text">{{cur_user.description}}</p>
-              
+                <p v-if="alreadyFriend" class="topleftrelationship">Friend</p>
+                <p v-else-if="alreadyBlocked" class="topleftrelationship">Blocked</p>
+                <p v-else class="topleftrelationship" style="height:24px;"></p>
+                <h5 class="card-title">
+                    <router-link :to="{ name: 'Profile', params: {id: cur_user.docid}}">{{cur_user.alias}}</router-link>
+                </h5>
+                <p v-if="cur_user.description" class="card-text limit-length">{{cur_user.description}}</p>
+                <p v-else class="card-text">No description</p>
             </div>
-            <div class="card-footer text-center">
+            <div class="card-footer text-center rounded">
                   <div class="btn-group">
                     <button v-show="!alreadyFriend" @click="addFriend" title="Add user as a friend"
-                        class="btn btn-primary btn-lg mr-2"><i class="fas fa-plus"></i></button>
+                        class="btn btn-primary btn-lg mr-5 rounded-circle"><i class="fas fa-plus"></i></button>
                     <button v-show="alreadyFriend" @click="unFriend" title="Unfriend user"
-                        class="btn btn-secondary btn-lg mr-2"><i class="fas fa-plus"></i></button>
+                        class="btn btn-secondary btn-lg mr-5 rounded-circle"><i class="fas fa-plus"></i></button>
                     <button v-show="!alreadyBlocked" @click="blockFriend" title="Block user"
-                        class="btn btn-danger btn-lg"><i class="fas fa-minus"></i></button>
+                        class="btn btn-danger btn-lg rounded-circle"><i class="fas fa-minus"></i></button>
                     <button v-show="alreadyBlocked" @click="unBlock" title="Unblock user"
-                        class="btn btn-secondary btn-lg"><i class="fas fa-minus"></i></button>
+                        class="btn btn-secondary btn-lg rounded-circle"><i class="fas fa-minus"></i></button>
                 </div>
             </div>
         </div>
@@ -196,8 +198,26 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .card-footer .btn-group .btn{
-    border-radius: 50% !important;
+    //border-radius: 50% !important;
+    margin-top:0px;
+    width:60px;
+    height:60px;
+}
+.topleftrelationship{
+    padding:0px;
+    margin:0px;
+    text-align:left;
+    font-weight:bold;
+}
+.limit-length{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    //max-width: 60ch;
+}
+a:hover{
+    text-decoration:none;
 }
 </style>

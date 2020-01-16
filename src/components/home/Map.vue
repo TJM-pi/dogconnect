@@ -3,7 +3,9 @@
     <div class="google-map" id="map"></div>
 
     <div class="btn-group-vertical" >
-      <button class="btn btn-primary btn-lg" @click="showModal" data-toggle="modal" data-target="#PingModal"><i class="fas fa-plus"></i></button>
+      <button class="btn btn-primary btn-lg" @click="showModal" data-toggle="modal" data-target="#PingModal">
+        <i class="fas fa-plus"></i>
+      </button>
       <div class="dropleft">
         <button class="btn btn-primary btn-lg" id="dropdownFilter" data-toggle="dropdown"><i class="fas fa-filter"></i></button>
         <div class="dropdown-menu">
@@ -15,10 +17,13 @@
           <a v-show="filterValue=='blocked'" href="" class="dropdown-item disabled">Blocked</a>
         </div>
       </div>
-      <button class="btn btn-danger btn-lg" @click="removePing"><i class="fas fa-trash"></i></button>
+      <button class="btn btn-danger btn-lg" @click="removePing" data-toggle="modal" data-target="#RemoveModal">
+        <i class="fas fa-trash"></i>
+      </button>
     </div>
-    <Ping v-if="isModalVisible" @close="closeModal" @ping="createPing"/>
+    <Ping v-if="isModalVisible" :geolocation="(lat!=null && lng!=null)?true:false" @close="closeModal" @ping="createPing"/>
     <Story v-if="isStoryVisible" :storyID="storyID" @close="closeModal"/>
+    <Remove v-if="isRemoveVisible" :user="user" @close="closeModal"/>
   </div>
 </template>
 
@@ -27,6 +32,7 @@
 /* eslint-disable no-unused-vars */
 import Ping from "@/components/home/Ping";
 import Story from "@/components/home/Story";
+import Remove from "@/components/home/Remove";
 import firebase from "firebase";
 import db from "@/firebase/init";
 
@@ -34,7 +40,8 @@ export default {
   name: "Map",
   components: {
     Ping,
-    Story
+    Story,
+    Remove
   },
   data() {
     return {
@@ -42,6 +49,7 @@ export default {
       lng: null,
       isModalVisible: false,
       isStoryVisible: false,
+      isRemoveVisible: false,
       map: null,
       all_markers: [], //u njemu se nalaze svi Marker(), showPings iz njega filtrirano prikazuje na mapu
       user: firebase.auth().currentUser,
@@ -72,14 +80,19 @@ export default {
         });
     },
 
+    setMapToEmpty(){
+      for(let i=0;i<this.all_markers.length;i++)
+        this.all_markers[i].setMap(null)
+    },
+
     setMapOnAllMarkers(){
       for(let i=0;i<this.all_markers.length; i++)
         this.all_markers[i].setMap(this.map)
     },
     setMapOnFriendMarkers(){
       let friendsArr = this.userDoc.friend_id
-      if(friendsArr === undefined){
-        console.log("You have no friends")
+      if(friendsArr === undefined || friendsArr.length==0){ //no friends
+        this.setMapToEmpty()
         return
       }
       for(let i=0;i<this.all_markers.length;i++)
@@ -92,8 +105,8 @@ export default {
     },
     setMapOnBlockedMarkers(){
       let blockedArr = this.userDoc.blocked_id
-      if(blockedArr === undefined){
-        console.log("You haven't blocked anyone")
+      if(blockedArr === undefined || blockedArr.length==0){ //no blocked
+        this.setMapToEmpty()
         return
       }
       for(let i=0;i<this.all_markers.length;i++)
@@ -210,15 +223,7 @@ export default {
       this.closeModal();
     },
     removePing(){
-      db
-      .collection("pings")
-      .where("user_id","==",this.user.uid)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          db.collection("pings").doc(doc.id).delete().then(() => console.log("Deleted."))
-        })
-      })
+      this.isRemoveVisible = true;
     },
     showModal() {
       this.isModalVisible = true;
@@ -226,12 +231,13 @@ export default {
     closeModal() {
       this.isModalVisible = false;
       this.isStoryVisible = false;
+      this.isRemoveVisible = false;
     },
     renderMap() {
       this.map = new window.google.maps.Map(document.getElementById("map"), {
-        center: {
-          lat: this.lat,
-          lng: this.lng
+        center: { //zagreb ako je geolocation off
+          lat: (this.lat == null) ? 45.7938097:this.lat,
+          lng: (this.lng == null) ? 15.986541:this.lng
         },
         zoom: 6,
         maxZoom: 15,
@@ -286,7 +292,6 @@ export default {
           this.lat = pos.coords.latitude;
           this.lng = pos.coords.longitude;
           this.renderMap();
-          this.pingListener()
         },
         err => {
           console.log(err);
@@ -299,8 +304,8 @@ export default {
       );
     } else {
       this.renderMap();
-      this.pingListener()
     }
+    this.pingListener()
   }
 };
 </script>

@@ -1,18 +1,23 @@
 <template>
     <div class="container">
-        <h1 class="text-center">Social</h1>
-        <div class="btn-toolbar mb-2">
-            <div class="btn-group">
-                <button class="btn btn-primary mr-2" @click="change('all')">All</button>
-                <button class="btn btn-primary mr-2" @click="change('friend')">Friends only</button>
-                <button class="btn btn-danger mr-2"  @click="change('blocked')">Blocked only</button>
+        <h1 class="text-center mt-4 mb-4">Social</h1>   
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="dropdown">
+                    <button class="btn btn-primary" id="dropdownFilter" data-toggle="dropdown">{{filterBy}}</button>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item" @click.prevent="change('All')">All</a>
+                        <a href="" class="dropdown-item"  @click.prevent="change('Friends')">Friends</a>
+                        <a href="" class="dropdown-item"  @click.prevent="change('Blocked')">Blocked</a>
+                    </div>
+                </div>
             </div>
-            <div class="input-group">
-                <input v-model="searchTerm" type="text" class="form-control" placeholder="Search user">
-            </div>
+            <input v-model="searchTerm" type="text" class="form-control" placeholder="Search user">
         </div>
+        <div class="row mb-4">
         <SocialCard v-for="user in filteredUsers" :key="user.user_id" :cur_user="user" 
                     @newUserDoc="updateUserDoc"/>
+        </div>
     </div>
 </template>
 
@@ -34,7 +39,7 @@ export default {
             user: null,
             userDoc: null,
             filterDropdown: false,
-            filterBy: false,
+            filterBy: "All",
             searchTerm: ""
         }
     },
@@ -82,10 +87,12 @@ export default {
         .then(snap => {
             snap.forEach(doc => {
                 var user = doc.data();
-                if(user.user_id != this.user.uid) //preskoci sebe
+                if(user.user_id != this.user.uid){ //preskoci sebe
+                    user.docid = doc.id;
                     this.users.push(user);
+                }
                    
-                 else this.userDoc = user //ucitaj svoj doc.data() odma
+                else this.userDoc = user //ucitaj svoj doc.data() odma
             })
         })
         console.log("Social mounted")
@@ -94,12 +101,12 @@ export default {
     computed: {
         filteredUsers(){
             let filteredArr = this.users
-            if(this.filterBy=="friend"){
+            if(this.filterBy=="Friends"){
                 console.log("filter friends")
                 let friends = this.userDoc.friend_id
                 filteredArr = this.filterArrByArr(this.users, friends)
             }
-            else if(this.filterBy=="blocked"){
+            else if(this.filterBy=="Blocked"){
                 console.log("filter blocked")
                 let blocked = this.userDoc.blocked_id
                 console.log("in social blockedarr: ", blocked)
@@ -115,4 +122,5 @@ export default {
 .btn{
     margin-top:0px;
 }
+
 </style>
