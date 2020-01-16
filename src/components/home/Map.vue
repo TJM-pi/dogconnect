@@ -45,6 +45,7 @@ export default {
   },
   data() {
     return {
+      oms: null,
       lat: null,
       lng: null,
       isModalVisible: false,
@@ -66,7 +67,7 @@ export default {
       this.showPings()
     },
     addListenerToMarker(marker, ping) { //implementacija click eventa pinga
-        marker.addListener("click", () => {
+        marker.addListener("spider_click", () => {
           db.collection("users")
             .where("user_id", "==", ping.user_id)
             .get()
@@ -130,9 +131,11 @@ export default {
           lat: ping.latitude,
           lng: ping.longitude
         },
-        map: this.map, //odma ga stavi na mapu (pr. pri mountu)
+        map: null, //this.map, //odma ga stavi na mapu (pr. pri mountu)
         user_id: ping.user_id
       })
+      
+      this.oms.addMarker(marker);
       this.addListenerToMarker(marker,ping)
       this.all_markers.push(marker)
     },
@@ -244,6 +247,25 @@ export default {
         minZoom: 3,
         streetViewControl: false
       });
+      this.oms = new window.OverlappingMarkerSpiderfier(this.map, { 
+        markersWontMove: true,
+        markersWontHide: true,
+        //basicFormatEvents: true
+      });
+      this.oms.addListener('format', (marker, status) => {
+        var iconURL = status == window.OverlappingMarkerSpiderfier.markerStatus.SPIDERFIABLE ? 'images/ping_expand.png' :
+          marker.user_id == this.user.uid ? 'images/ping-owner.png' :
+          status == window.OverlappingMarkerSpiderfier.markerStatus.SPIDERFIED ? 'images/ping.png' :
+          status == window.OverlappingMarkerSpiderfier.markerStatus.UNSPIDERFIABLE ? 'images/ping.png' : 
+          null;
+        
+        var iconSize = new window.google.maps.Size(32, 32);
+        marker.setIcon({
+          url: iconURL,
+          size: iconSize,
+          scaledSize: iconSize  // makes SVG icons work in IE
+        });
+      });
     },
     userDocListener(){ //refreshes userDoc (coz new friends/blocked)
       db
@@ -252,7 +274,6 @@ export default {
       .onSnapshot(snapshot => {
         snapshot.forEach(doc => {
           this.userDoc = doc.data()
-          console.log("userDoc updated.", this.userDoc)
         })
       })
     },
