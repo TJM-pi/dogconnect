@@ -1,24 +1,20 @@
-# dog-connect
+Tim: Jurica Jurinčić, Timon Dudaković, Marko Gabrovec
 
-## Project setup
-```
-yarn install
-```
+<h3>APLIKACIJA</h3>
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+Naziv: Dogconnect
 
-### Compiles and minifies for production
-```
-yarn build
-```
+Svrha: Omogućiti vlasnicima pasa interakciju sa drugim vlasnicima preko geolokacije.
 
-### Lints and fixes files
-```
-yarn lint
-```
+Funkcionalnosti:
+- Dodavanje ping-a (marker-a) na Google Map-u na temelju lokacije
+- Dodavanje story-a (slike + opisa) na ping
+- Mogućnost pregledavanja tuđih story-a preko mape
+- Friend/block druge korisnike (+filtracija mape po friends/blocked)
+- Statistički heatmap temeljen na svim prošlim postavljenim ping-ovima (Global - ping-ovi svih usera, Personal - samo vaši)
+- Profil sa mogućnostima ažuriranja profilne slike, opisa, email-a, šifre i username-a (postoji par grešaka)
+- Standardni login/signup
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Korištene tehnologije:
+- Vue JS + firebase
+- OverlappingMarkerSpiderfier plugin (N gusto postavljenih markera na mapi razdvaja u stilu paukove mreže za lakši pregled)
