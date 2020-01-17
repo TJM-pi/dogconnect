@@ -8,17 +8,20 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <img v-if="image.length>0" :src="image" class="preview-image">
+      <div v-if="geolocation" class="modal-body">
+        <img v-if="image.length>0" :src="image" class="readjust img-thumbnail mb-4">
         <h6>Story: </h6>
         <div class="input-group">
           <textarea v-model="story" name="story" id="story" cols="30" rows="2" class="form-control"></textarea>
         </div>
         <UploadImage @send="storeImage"/>
       </div>
+      <div v-else-if="!geolocation" class="modal-body">
+        <h2 class="text-center">You must have geolocation enabled to create a ping.</h2>
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" @click.prevent="ping">Create</button>
+        <button v-if="geolocation" type="button" class="btn btn-primary" data-dismiss="modal" @click.prevent="ping">Create</button>
       </div>
     </div>
   </div>
@@ -30,6 +33,7 @@
 import UploadImage from '@/components/layout/UploadImage'
 export default {
     name: 'Ping',
+    props: ['geolocation'],
     components: {
         UploadImage
     },
@@ -61,11 +65,12 @@ export default {
 </script>
 
 <style lang="scss">
-
-.preview-image{
-  width:100%;
-  max-height:300px;
-  border:1px solid white;
-  margin-bottom: 10px;
+.readjust{
+    object-fit: cover;
+    object-position: center;
+    max-height:300px;
+    width:80%;
+    margin: 0 auto;
+    display: block;
 }
 </style>

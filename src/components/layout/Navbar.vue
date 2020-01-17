@@ -1,26 +1,57 @@
 <template>
-   <div class="container-fluid" style="padding:0px;">
+   <div class="container-fluid" style="padding:0px;" id="navheader">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a href="#" class="navbar-brand w-50 mr-auto">Dogconnect</a>
+      <router-link :to="{name: 'Map'}" class="navbar-brand w-50 mr-auto">
+        <img src="/images/paw.png" height="40" width="40" alt="Dogconnect" class="mr-2">
+        Dogconnect
+      </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
               aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        
+              <i class="fas fa-bars" style="color:#fff; font-size:26px;"></i>
       </button>
 
       <div class="collapse navbar-collapse w-100" id="navbarContent">
-        <ul class="navbar-nav w-100 justify-content-center">
-          <li class="nav-item active"><router-link :to="{name: 'Map'}" class="nav-link">Mapa</router-link></li>
-          <li class="nav-item"><router-link :to="{name: 'Social'}" class="nav-link">Social</router-link></li>
-          <li class="nav-item"><router-link :to="{name: 'Stats'}" class="nav-link">Statistics</router-link></li>
-          
+        <ul v-if="profile" class="navbar-nav w-100 justify-content-center" id="centerNav">
+          <li class="nav-item" :class="{active:active === 'Map'}">
+            <router-link :to="{name: 'Map'}" class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+              <i class="fas fa-globe-europe"></i> Map
+            </router-link>
+          </li>
+          <li class="nav-item" :class="{active:active === 'Social'}">
+            <router-link :to="{name: 'Social'}" class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+              <i class="fas fa-user-friends"></i> Social
+            </router-link>
+          </li>
+          <li class="nav-item" :class="{active:active === 'Stats'}">
+            <router-link :to="{name: 'Stats'}" class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+              <i class="fas fa-chart-area"></i> Statistics
+            </router-link>
+          </li>
         </ul>
         <ul v-if="profile" class="navbar-nav w-100 ml-auto justify-content-end">
-          <li class="nav-item active"><router-link :to="{name: 'Profile', params: {id: id}}" class="nav-link">{{profile.alias}}</router-link></li>
-          <li class="nav-item"><a href="" class="nav-link"  @click="logout">Logout</a></li>
+          <li class="nav-item" :class="{active:active === 'Profile'}">
+            <router-link :to="{name: 'Profile', params: {id: id}}" class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+              {{profile.alias}}
+            </router-link>
+          </li>
+          <li class="nav-item" :class="{active:active === 'Logout'}">
+            <a href="" class="nav-link"  @click="logout">
+              Logout
+            </a>
+          </li>
         </ul>
         <ul v-if="!profile" class="navbar-nav w-100 ml-auto justify-content-end">
-          <li class="nav-item active"><router-link :to="{name: 'Login'}" class="nav-link">Login</router-link></li>
-          <li class="nav-item active"><router-link :to="{name: 'Signup'}" class="nav-link">Signup</router-link></li>
+          <li class="nav-item" :class="{active:active === 'Login'}">
+            <router-link :to="{name: 'Login'}" class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+              Login
+            </router-link>
+          </li>
+          <li class="nav-item" :class="{active:active === 'Signup'}">
+            <router-link :to="{name: 'Signup'}" class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+              Signup
+            </router-link>
+          </li>
         </ul>
       </div>
     </nav>
@@ -38,7 +69,8 @@ export default {
       user: null,
       profile: null,
       id: null,
-      isHidden: true
+      isHidden: true,
+      active: 'Map',
     }
   },
   methods: {
@@ -46,9 +78,15 @@ export default {
       firebase.auth().signOut().then(() => {
         this.$router.push({ name: 'Login'})
       })
+    },
+  },
+  watch:{
+    $route(to){
+      this.active = to.name
     }
   },
-  created () {
+  mounted () {
+    this.active = this.$router.currentRoute.name
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.user = user;
@@ -67,24 +105,41 @@ export default {
 }
 </script>
 
-<style lang="scss">  
-  nav .brand-logo i.material-icons{
-    margin-right:0px;
+<style lang="scss">
+  body{
+    background-color:#e8f1f5 !important;
   }
-
-  .center-nav{
-    position: absolute;
-    color: #fff;
-    display: inline-block;
-    font-size: 2.1rem;
-    padding: 0;
-
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
+  .navbar{
+    background-color:#0080ff !important;
+    width:100%;
+    margin: 0 auto;
+    margin-bottom:10px;
+    padding-bottom:0px;
+    padding-top:0px;
   }
-
-  .ultext li a{
-    font-size:17px;
+  .navbar .nav-link{
+    color:white !important;
+    font-size: 17px;
+    border-bottom: 1px solid transparent;
+    border-radius: .25rem;
+  }
+  #centerNav .nav-item{
+    margin-right:15px !important;
+  }
+  .nav-item{
+    padding-top:8px;
+    padding-bottom:8px;
+  }
+  .nav-link:hover{
+    border-color: white !important;
+  }
+  .navbar .navbar-brand {
+    color:white;
+  }
+  .navbar .fas{
+    font-size: 20px;
+  }
+  .active .nav-link{
+    border-color: white;
   }
 </style>

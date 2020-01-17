@@ -1,7 +1,7 @@
 <template>
-    <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="card col-sm-4 mt-4">
+    <div class="row" style="margin: 0 auto;">
+        <div class="col-lg-4 col-sm-2 col-1"></div>
+        <div class="card col-lg-4 col-sm-8 col-10 mt-4">
             <div class="card-body text-center">
                 <h1 class="card-title">Settings</h1>
                 <div class="btn-group-vertical">
@@ -18,7 +18,7 @@
                 <Modal v-if="isModalVisible" :modalData="modalData" @change="changeData"/>
             </div>
         </div>
-        <div class="col-sm-4"></div>
+        <div class="col-lg-4 col-sm-2 col-1"></div>
     </div>
 </template>
 

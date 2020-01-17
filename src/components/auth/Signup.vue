@@ -1,7 +1,7 @@
 <template>
-<div class="row mt-4">
-    <div class="col-sm-4"></div>
-    <form class="card col-sm-4" @click.prevent="signup">
+<div class="row mt-4" style="margin: 0 auto;">
+    <div class="col-lg-4 col-sm-2 col-1"></div>
+    <form class="card col-lg-4 col-sm-8 col-10" @click.prevent="signup">
         <div class="card-body">
             <h1 class="card-title text-center">Signup</h1>
             <div class="form-group">
@@ -22,7 +22,7 @@
             </div>
         </div>
     </form>
-    <div class="col-sm-4"></div>
+    <div class="col-lg-4 col-sm-2 col-1"></div>
 </div>
 </template>
 
@@ -84,16 +84,4 @@ export default {
 </script>
 
 <style>
-.signup {
-    max-width: 400px;
-    margin-top: 60px;
-}
-
-.signup h2 {
-    font-size: 4.2em;
-}
-
-.signup .field {
-    margin-bottom: 16px;
-}
 </style>

@@ -1,11 +1,11 @@
 <template>
-   <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="card col-sm-4 mt-4">
+   <div class="row" style="margin: 0 auto;">
+        <div class="col-lg-4 col-sm-2 col-1"></div>
+        <div class="card col-lg-4 col-sm-8 col-10 mt-4">
             <div class="card-body text-center">
                 <h1>Edit personal info</h1>
                 <!--<h3 v-if="profile" class="card-title">{{profile.alias}}</h3>-->
-                <img v-if="image.length>0" :src="image" width="80%" height="200" style="margin: 0 auto;" class="mt-4">
+                <img v-if="image.length>0" :src="image" class="readjust img-thumbnail mt-4">
                 <h6 class="mt-4">Description: </h6>
                 <div class="input-group">
                     <textarea v-model="description" name="desc" id="desc" cols="30" rows="2" class="form-control"></textarea>
@@ -14,11 +14,11 @@
                 <div class="btn-group">
                     <button class="btn btn-danger btn-md mr-2" @click.prevent="close">Cancel</button>
                     <button class="btn btn-primary btn-md mr-2" @click.prevent="confirm">Confirm</button>
-                    <button  v-if="confirmed" class="btn btn-primary btn-md" @click.prevent="change">Go to profile</button>
+                <!--<button  v-if="confirmed" class="btn btn-primary btn-md" @click.prevent="change">Go to profile</button>-->
                 </div>
             </div>
         </div>
-        <div class="col-sm-4"></div>
+        <div class="col-lg-4 col-sm-2 col-1"></div>
     </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
                     image: this.image
                 })
             }
+            this.change()
         },
         close() {
             this.$router.go(-1)
@@ -71,5 +72,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.readjust{
+    object-fit: cover;
+    object-position: center;
+    height:270px;
+    width:80%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
 </style>

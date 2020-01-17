@@ -9,9 +9,9 @@
             </button>
         </div>
         <div class="modal-body">
-            <img v-if="image.length>0" :src="image" class="preview-image">
-            <h6>Story: </h6>
-            <p>{{story}}</p>
+            <img v-if="image.length>0" :src="image" class="readjust img-thumbnail">
+            <h5 class="mt-3 text-center">Story:</h5>
+            <p class="limit-length">{{story}}</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">Cancel</button>
@@ -69,6 +69,25 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+.readjust{
+    object-fit: cover;
+    object-position: center;
+    max-height:300px;
+    width:80%;
+    margin: 0 auto;
+    display: block;
+}
+.limit-length{
+    width:80%;
+    margin: 0 auto;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-align:justify;
+    text-align-last:center;
+}
 </style>
