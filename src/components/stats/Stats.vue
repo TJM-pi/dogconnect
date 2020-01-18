@@ -89,7 +89,7 @@ export default {
                         this.renderMap()
                     },
                     err => {
-                        console.log(err)
+                        //console.log(err)
                         this.renderMap()
                     },
                     {

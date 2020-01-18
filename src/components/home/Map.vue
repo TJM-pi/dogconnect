@@ -72,7 +72,7 @@ export default {
             .where("user_id", "==", ping.user_id)
             .get()
             .then(snapshot => {
-              console.log("showPings")
+              //console.log("showPings")
               snapshot.forEach(doc => {
                   this.storyID = doc.id;
                   this.isStoryVisible = true;
@@ -119,7 +119,7 @@ export default {
       }
     },
     showPings(){ //use this method to list pings on map (HAS FILTER)
-      console.log("showing pings")
+      //console.log("showing pings")
 
       if(this.filterValue == "all") this.setMapOnAllMarkers()
       else if(this.filterValue == "friends") this.setMapOnFriendMarkers()
@@ -162,7 +162,7 @@ export default {
               });
           },
           err => {
-            console.log(err);
+            //console.log(err);
           },
           {
             maximumAge: 60000,
@@ -288,10 +288,10 @@ export default {
           }
           if (change.type === "modified") { //triggered when same user creates ping twice
             this.addPingToMap(change.doc.data())
-            console.log("Modified ping: ", change.doc.data());
+            //console.log("Modified ping: ", change.doc.data());
           }
           if (change.type === "removed") { //currently cannot remove pings from db
-            console.log("Removed ping: ", change.doc.data());
+            //console.log("Removed ping: ", change.doc.data());
             let deletedPing = change.doc.data()
             for(let i=0;i<this.all_markers.length;i++){
               if(this.all_markers[i].user_id === deletedPing.user_id){
@@ -315,7 +315,7 @@ export default {
           this.renderMap();
         },
         err => {
-          console.log(err);
+          //console.log(err);
           this.renderMap();
         },
         {

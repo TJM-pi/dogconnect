@@ -46,7 +46,7 @@ export default {
 
     methods: {
         change(clickValue){
-            console.log(clickValue)
+            //console.log(clickValue)
             //if(this.filterBy === clickValue) this.filterBy = false
             //else this.filterBy = clickValue
             this.filterBy = clickValue
@@ -75,7 +75,7 @@ export default {
 
         updateUserDoc(newUserDocument){
             this.userDoc = newUserDocument
-            console.log("Updated user doc: ",this.userDoc)
+            //console.log("Updated user doc: ",this.userDoc)
         }
     },
 
@@ -95,7 +95,7 @@ export default {
                 else this.userDoc = user //ucitaj svoj doc.data() odma
             })
         })
-        console.log("Social mounted")
+        //console.log("Social mounted")
     },
 
     computed: {

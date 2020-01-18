@@ -65,7 +65,7 @@ export default {
                     this.story = doc.data().story
                     this.image = doc.data().image
                     this.date = this.prettyDate(doc.data().dateCreated.toDate())
-                    console.log(this.date)
+                    //console.log(this.date)
                     window.$('#StoryModal').modal('show')
                 })
             })

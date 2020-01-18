@@ -80,7 +80,7 @@ export default {
                         let newUserDoc = document.data()
                         newUserDoc.friend_id = newFriendsArr
                         newUserDoc.blocked_id = newBlockedArr
-                        console.log("hereee: ", newUserDoc)
+                        //console.log("hereee: ", newUserDoc)
                         this.$emit('newUserDoc', newUserDoc)
                         
                     })
@@ -120,7 +120,7 @@ export default {
                         let newUserDoc = document.data()
                         newUserDoc.friend_id = newFriendsArr
                         newUserDoc.blocked_id = newBlockedArr
-                        console.log("hereee: ", newUserDoc)
+                        //console.log("hereee: ", newUserDoc)
                         this.$emit('newUserDoc', newUserDoc)
                     })
                 })
@@ -162,7 +162,7 @@ export default {
                         //hardfix
                         let newUserDoc = document.data()
                         newUserDoc.blocked_id = newBlockedArr
-                        console.log("newBLOCKEDARR: ",newUserDoc)
+                        //console.log("newBLOCKEDARR: ",newUserDoc)
                         this.$emit('newUserDoc',newUserDoc)
                     })
                 })
