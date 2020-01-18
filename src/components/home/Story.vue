@@ -1,5 +1,5 @@
 <template>
-<div class="modal fade" id="StoryModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<div class="modal fade" id="StoryModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
@@ -12,6 +12,7 @@
             <img v-if="image.length>0" :src="image" class="readjust img-thumbnail">
             <h5 class="mt-3 text-center">Story:</h5>
             <p class="limit-length">{{story}}</p>
+            <p class="dateCreated" >{{date}}</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">Cancel</button>
@@ -34,13 +35,25 @@ export default {
         return {
             profile: null,
             story: null,
-            image: ""
+            image: "",
+            date: null
         }
     },
     methods: {
       close() {
         this.$emit('close');
       },
+      prettyDate(uglyDate){
+          let months = {
+              0:"January",1: "February",2:"March",3:"April",
+              4:"May",5:"june",6:"July",7:"August",8:"September",
+              9:"October",10:"November",11:"December"
+          }
+          return uglyDate.getDate() + " " + 
+                 months[uglyDate.getMonth()] + " " + 
+                 uglyDate.getFullYear()
+      },
+
       loadStory(){
         db.collection('users').doc(this.storyID).get()
         .then(user => {
@@ -51,6 +64,8 @@ export default {
                 snapshot.forEach(doc => {
                     this.story = doc.data().story
                     this.image = doc.data().image
+                    this.date = this.prettyDate(doc.data().dateCreated.toDate())
+                    console.log(this.date)
                     window.$('#StoryModal').modal('show')
                 })
             })
@@ -89,5 +104,11 @@ export default {
     -webkit-box-orient: vertical;
     text-align:justify;
     text-align-last:center;
+}
+.dateCreated{
+    color:gray;
+    margin: 10px 0px 0px 0px;
+    text-align:center;
+    font-size:15px;
 }
 </style>

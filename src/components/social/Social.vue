@@ -69,7 +69,7 @@ export default {
                     }
                 }
             }
-            console.log(filteredArr)
+            //console.log(filteredArr)
             return filteredArr
         },
 
@@ -102,14 +102,13 @@ export default {
         filteredUsers(){
             let filteredArr = this.users
             if(this.filterBy=="Friends"){
-                console.log("filter friends")
                 let friends = this.userDoc.friend_id
+                if(friends == undefined || friends.length==0) return []
                 filteredArr = this.filterArrByArr(this.users, friends)
             }
             else if(this.filterBy=="Blocked"){
-                console.log("filter blocked")
                 let blocked = this.userDoc.blocked_id
-                console.log("in social blockedarr: ", blocked)
+                if(blocked == undefined || blocked.length==0) return []
                 filteredArr = this.filterArrByArr(this.users,blocked)
             }
             return filteredArr.filter(user => user.alias.includes(this.searchTerm))
