@@ -88,7 +88,7 @@ export default {
                         this.lng = pos.coords.longitude
                         this.renderMap()
                     },
-                    err => {
+                    () => {
                         //console.log(err)
                         this.renderMap()
                     },
