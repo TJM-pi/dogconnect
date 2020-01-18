@@ -161,9 +161,6 @@ export default {
                 });
               });
           },
-          err => {
-            //console.log(err);
-          },
           {
             maximumAge: 60000,
             timeout: 3000
