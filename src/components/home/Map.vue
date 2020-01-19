@@ -28,7 +28,6 @@
 </template>
 
 <script>
-// Asinkrone funkcije zajebavaju, odvoji funkciju i pozovi je tek nakon!
 /* eslint-disable no-unused-vars */
 import Ping from "@/components/home/Ping";
 import Story from "@/components/home/Story";
@@ -139,7 +138,7 @@ export default {
       this.addListenerToMarker(marker,ping)
       this.all_markers.push(marker)
     },
-    getLocation() { //updates user's lat, lng coordinates to current one's (IMPORTANT WHILE USER IS MOVING AROUND)
+    getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           pos => {
@@ -239,7 +238,7 @@ export default {
           lat: (this.lat == null) ? 45.7938097:this.lat,
           lng: (this.lng == null) ? 15.986541:this.lng
         },
-        zoom: 6,
+        zoom: 8,
         maxZoom: 15,
         minZoom: 3,
         streetViewControl: false
@@ -263,6 +262,7 @@ export default {
           scaledSize: iconSize  // makes SVG icons work in IE
         });
       });
+      this.pingListener()
     },
     userDocListener(){ //refreshes userDoc (coz new friends/blocked)
       db
@@ -304,7 +304,7 @@ export default {
   },
   mounted() {
     this.userDocListener()
-    if (navigator.geolocation) { //location enabled
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         pos => {
           this.lat = pos.coords.latitude;
@@ -312,18 +312,15 @@ export default {
           this.renderMap();
         },
         () => {
-          //console.log(err);
           this.renderMap();
         },
         {
           maximumAge: 60000,
           timeout: 3000
         }
-      );
-    } else {
-      this.renderMap();
+      )
     }
-    this.pingListener()
+    else this.renderMap()
   }
 };
 </script>
