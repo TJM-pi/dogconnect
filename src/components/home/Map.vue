@@ -160,6 +160,7 @@ export default {
                 });
               });
           },
+          () => {},
           {
             maximumAge: 60000,
             timeout: 3000
