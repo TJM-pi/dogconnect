@@ -240,7 +240,7 @@ export default {
           lng: (this.lng == null) ? 15.986541:this.lng
         },
         zoom: 8,
-        maxZoom: 15,
+        maxZoom: 17,
         minZoom: 3,
         streetViewControl: false
       });
