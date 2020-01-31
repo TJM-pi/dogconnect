@@ -16,6 +16,8 @@ Funkcionalnosti:
 - Standardni login/signup
 
 Korištene tehnologije:
-- Yarn
-- Vue JS + firebase
-- OverlappingMarkerSpiderfier plugin (N gusto postavljenih markera na mapi razdvaja u stilu paukove mreže za lakši pregled)
+- Yarn (https://legacy.yarnpkg.com/en/)
+- Vue JS + Firebase Cloud Firestore (https://vuejs.org/), (https://firebase.google.com/docs/firestore)
+- Bootstrap (https://getbootstrap.com/)
+- Google Maps (https://cloud.google.com/maps-platform/)
+- OverlappingMarkerSpiderfier plugin (N gusto postavljenih markera na mapi razdvaja u stilu paukove mreže za lakši pregled) (https://github.com/jawj/OverlappingMarkerSpiderfier)
