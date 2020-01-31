@@ -2,8 +2,8 @@
     <div class="container mb-5">
         <h1 class="text-center mt-4">Statistics</h1>
         <div class="btn-group mb-2">
-            <button class="btn btn-primary mr-2" @click="change('global')" >Global</button>
-            <button class="btn btn-primary" @click="change('yours')">Personal</button>
+            <button class="btn btn-primary mr-2" @click="change('global')" :class="{active: statType=='global'}">Global</button>
+            <button class="btn btn-primary" @click="change('yours')" :class="{active: statType=='yours'}">Personal</button>
         </div>
         <div class="google-map" id="map"></div>
     </div>
@@ -75,7 +75,7 @@ export default {
                     lat: (this.lat == null) ? 45.7938097:this.lat,
                     lng: (this.lng == null) ? 15.986541:this.lng
                 },
-                zoom: 13,
+                zoom: 7,
                 gestureHandling: 'greedy',
                 streetViewControl: false
             })
@@ -88,8 +88,8 @@ export default {
                         this.lng = pos.coords.longitude
                         this.renderMap()
                     },
-                    err => {
-                        console.log(err)
+                    () => {
+                        //console.log(err)
                         this.renderMap()
                     },
                     {

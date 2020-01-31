@@ -52,7 +52,7 @@ export default {
         this.$emit('close'); 
       },
       ping() {
-          console.log("here", this.story)
+          //console.log("here", this.story)
           if (this.story) {
             this.feedback = null
             this.$emit('ping', this.story, this.image)

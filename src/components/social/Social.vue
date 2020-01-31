@@ -46,7 +46,7 @@ export default {
 
     methods: {
         change(clickValue){
-            console.log(clickValue)
+            //console.log(clickValue)
             //if(this.filterBy === clickValue) this.filterBy = false
             //else this.filterBy = clickValue
             this.filterBy = clickValue
@@ -69,13 +69,13 @@ export default {
                     }
                 }
             }
-            console.log(filteredArr)
+            //console.log(filteredArr)
             return filteredArr
         },
 
         updateUserDoc(newUserDocument){
             this.userDoc = newUserDocument
-            console.log("Updated user doc: ",this.userDoc)
+            //console.log("Updated user doc: ",this.userDoc)
         }
     },
 
@@ -95,21 +95,20 @@ export default {
                 else this.userDoc = user //ucitaj svoj doc.data() odma
             })
         })
-        console.log("Social mounted")
+        //console.log("Social mounted")
     },
 
     computed: {
         filteredUsers(){
             let filteredArr = this.users
             if(this.filterBy=="Friends"){
-                console.log("filter friends")
                 let friends = this.userDoc.friend_id
+                if(friends == undefined || friends.length==0) return []
                 filteredArr = this.filterArrByArr(this.users, friends)
             }
             else if(this.filterBy=="Blocked"){
-                console.log("filter blocked")
                 let blocked = this.userDoc.blocked_id
-                console.log("in social blockedarr: ", blocked)
+                if(blocked == undefined || blocked.length==0) return []
                 filteredArr = this.filterArrByArr(this.users,blocked)
             }
             return filteredArr.filter(user => user.alias.includes(this.searchTerm))

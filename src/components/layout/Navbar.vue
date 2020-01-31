@@ -2,8 +2,7 @@
    <div class="container-fluid" style="padding:0px;" id="navheader">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <router-link :to="{name: 'Map'}" class="navbar-brand w-50 mr-auto">
-        <img src="/images/paw.png" height="40" width="40" alt="Dogconnect" class="mr-2">
-        Dogconnect
+        <img src="/images/logo.png" height="40" width="200" alt="Dogconnect" class="mr-2">
       </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
               aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">

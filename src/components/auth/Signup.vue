@@ -1,7 +1,7 @@
 <template>
 <div class="row mt-4" style="margin: 0 auto;">
     <div class="col-lg-4 col-sm-2 col-1"></div>
-    <form class="card col-lg-4 col-sm-8 col-10" @click.prevent="signup">
+    <form class="card col-lg-4 col-sm-8 col-10">
         <div class="card-body">
             <h1 class="card-title text-center">Signup</h1>
             <div class="form-group">
@@ -17,7 +17,7 @@
                 <input type="password" class="form-control" id="InputPass" placeholder="Password" v-model="password">
             </div>
             <div style="text-align:center;">
-                <button type="submit" id="asd" class="btn btn-primary btn-lg">Signup</button>
+                <button type="submit" id="asd" class="btn btn-primary btn-lg" @click.prevent="signup">Signup</button>
                 <p v-if="feedback" style="color:red; margin:0px;" class="mt-3">{{feedback}}</p>
             </div>
         </div>
@@ -72,7 +72,7 @@ export default {
                         .catch(err => {
                             this.feedback = err.message
                         })
-                        this.feedback = 'This alias is free for use'
+                        //this.feedback = 'This alias is free for use'
                     }
                 })
             } else {

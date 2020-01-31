@@ -1,5 +1,5 @@
 <template>
-    <div class="row" style="margin: 0 auto;">
+    <div class="row mb-2" style="margin: 0 auto;">
         <div class="col-lg-4 col-sm-2 col-1"></div>
         <div class="card col-lg-4 col-sm-8 col-10 mt-4 shadow">
             <img v-if="!loading && profile.image" class="readjust img-thumbnail shadow" :src="profile.image" alt="">

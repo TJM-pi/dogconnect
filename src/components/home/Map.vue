@@ -28,7 +28,6 @@
 </template>
 
 <script>
-// Asinkrone funkcije zajebavaju, odvoji funkciju i pozovi je tek nakon!
 /* eslint-disable no-unused-vars */
 import Ping from "@/components/home/Ping";
 import Story from "@/components/home/Story";
@@ -72,7 +71,7 @@ export default {
             .where("user_id", "==", ping.user_id)
             .get()
             .then(snapshot => {
-              console.log("showPings")
+              //console.log("showPings")
               snapshot.forEach(doc => {
                   this.storyID = doc.id;
                   this.isStoryVisible = true;
@@ -119,7 +118,7 @@ export default {
       }
     },
     showPings(){ //use this method to list pings on map (HAS FILTER)
-      console.log("showing pings")
+      //console.log("showing pings")
 
       if(this.filterValue == "all") this.setMapOnAllMarkers()
       else if(this.filterValue == "friends") this.setMapOnFriendMarkers()
@@ -139,7 +138,7 @@ export default {
       this.addListenerToMarker(marker,ping)
       this.all_markers.push(marker)
     },
-    getLocation() { //updates user's lat, lng coordinates to current one's (IMPORTANT WHILE USER IS MOVING AROUND)
+    getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           pos => {
@@ -161,9 +160,7 @@ export default {
                 });
               });
           },
-          err => {
-            console.log(err);
-          },
+          () => {},
           {
             maximumAge: 60000,
             timeout: 3000
@@ -242,8 +239,8 @@ export default {
           lat: (this.lat == null) ? 45.7938097:this.lat,
           lng: (this.lng == null) ? 15.986541:this.lng
         },
-        zoom: 6,
-        maxZoom: 15,
+        zoom: 8,
+        maxZoom: 17,
         minZoom: 3,
         streetViewControl: false
       });
@@ -266,6 +263,7 @@ export default {
           scaledSize: iconSize  // makes SVG icons work in IE
         });
       });
+      this.pingListener()
     },
     userDocListener(){ //refreshes userDoc (coz new friends/blocked)
       db
@@ -288,10 +286,10 @@ export default {
           }
           if (change.type === "modified") { //triggered when same user creates ping twice
             this.addPingToMap(change.doc.data())
-            console.log("Modified ping: ", change.doc.data());
+            //console.log("Modified ping: ", change.doc.data());
           }
           if (change.type === "removed") { //currently cannot remove pings from db
-            console.log("Removed ping: ", change.doc.data());
+            //console.log("Removed ping: ", change.doc.data());
             let deletedPing = change.doc.data()
             for(let i=0;i<this.all_markers.length;i++){
               if(this.all_markers[i].user_id === deletedPing.user_id){
@@ -307,26 +305,23 @@ export default {
   },
   mounted() {
     this.userDocListener()
-    if (navigator.geolocation) { //location enabled
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         pos => {
           this.lat = pos.coords.latitude;
           this.lng = pos.coords.longitude;
           this.renderMap();
         },
-        err => {
-          console.log(err);
+        () => {
           this.renderMap();
         },
         {
           maximumAge: 60000,
           timeout: 3000
         }
-      );
-    } else {
-      this.renderMap();
+      )
     }
-    this.pingListener()
+    else this.renderMap()
   }
 };
 </script>
